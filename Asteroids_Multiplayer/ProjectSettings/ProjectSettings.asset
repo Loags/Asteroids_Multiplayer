@@ -769,11 +769,11 @@ PlayerSettings:
   apiCompatibilityLevel: 6
   activeInputHandler: 0
   windowsGamepadBackendHint: 0
-  cloudProjectId: 
+  cloudProjectId: a2f73040-d7d3-4623-a4ab-523f7c494366
   framebufferDepthMemorylessMode: 0
   qualitySettingsNames: []
-  projectName: 
-  organizationId: 
+  projectName: Asteroids_Multiplayer
+  organizationId: goags
   cloudEnabled: 0
   legacyClampBlendShapeWeights: 0
   playerDataPath: 

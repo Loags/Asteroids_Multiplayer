@@ -1,7 +1,8 @@
-using Unity.Netcode;
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerController : MonoBehaviour
+public class MovementController : MonoBehaviour
 {
     public float moveSpeed = 5f;
 
@@ -12,13 +13,7 @@ public class PlayerController : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
     }
 
-    private void Update()
-    {
-        if (GetComponent<NetworkObject>().IsOwner)
-            Movement();
-    }
-
-    private void Movement()
+    public void HandleMovementInput()
     {
         // Read input for movement
         float moveHorizontal = Input.GetAxis("Horizontal");
