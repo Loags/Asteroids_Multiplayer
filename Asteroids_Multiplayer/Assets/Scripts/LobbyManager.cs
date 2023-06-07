@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 using Unity.Netcode;
 using UnityEngine.SceneManagement;
@@ -22,8 +23,8 @@ public class LobbyManager : NetworkBehaviour
     {
         networkManager.OnClientConnectedCallback += OnClientConnect;
         networkManager.OnClientDisconnectCallback += OnClientDisconnected;
+        networkManager.OnServerStopped += LeaveServer;
     }
-
 
     private void Start()
     {
@@ -35,6 +36,7 @@ public class LobbyManager : NetworkBehaviour
     {
         networkManager.OnClientConnectedCallback -= OnClientConnect;
         networkManager.OnClientDisconnectCallback -= OnClientDisconnected;
+        networkManager.OnServerStopped -= LeaveServer;
     }
 
     /// <summary>
@@ -46,26 +48,50 @@ public class LobbyManager : NetworkBehaviour
         Debug.Log("Client connected to the lobby");
 
         // Perform any additional actions when a client joins the lobby
-        AddPlayerToLobbyServerRpc(_clientId);
+        if (IsHost)
+            AddPlayerToLobbyServerRpc(_clientId);
     }
 
     private void OnClientDisconnected(ulong _clientId)
     {
-        RemovePlayerToLobbyServerRpc(_clientId);
+        RemovePlayerToLobbyClientRpc(_clientId);
     }
 
-    [ServerRpc(RequireOwnership = false)]
+    private void LeaveServer(bool obj)
+    {
+        SceneManager.LoadScene("MainMenu");
+    }
+
+    [ServerRpc]
     private void AddPlayerToLobbyServerRpc(ulong _clientId)
     {
-        GameObject spawnedPrefab = Instantiate(lobbySlotPrefab, prefabTarget);
-        spawnedPrefab.AddComponent<PlayerData>().SetPlayerData(_clientId);
-        PlayerDataManager.AddPlayerData(spawnedPrefab.GetComponent<PlayerData>());
+        GameObject spawnedPrefab = Instantiate(lobbySlotPrefab);
+
+        spawnedPrefab.GetComponent<NetworkObject>().Spawn();
+        // Has to be spawned first over the network
+        spawnedPrefab.transform.SetParent(prefabTarget);
+
+        AddPlayerToLobbyClientRpc(_clientId, spawnedPrefab.GetComponent<NetworkObject>().NetworkObjectId);
     }
 
-    [ServerRpc(RequireOwnership = false)]
-    private void RemovePlayerToLobbyServerRpc(ulong _clientId)
+    [ClientRpc]
+    private void AddPlayerToLobbyClientRpc(ulong _clientId, ulong _networkObjectId)
     {
-        PlayerDataManager.RemovePlayerData(_clientId);
+        NetworkObject networkObject = GetNetworkObject(_networkObjectId);
+        GameObject spawnedPrefab = networkObject.gameObject;
+
+        PlayerData playerData = spawnedPrefab.AddComponent<PlayerData>();
+        playerData.SetPlayerData(_clientId);
+        PlayerDataManager.instance.AddPlayerData(playerData);
+
+        LobbySlot lobbySlot = spawnedPrefab.GetComponent<LobbySlot>();
+        lobbySlot.UpdateSlotWithPlayerData(playerData);
+    }
+
+    [ClientRpc]
+    private void RemovePlayerToLobbyClientRpc(ulong _clientId)
+    {
+        PlayerDataManager.instance.RemovePlayerData(_clientId);
     }
 
     public void StartGame()

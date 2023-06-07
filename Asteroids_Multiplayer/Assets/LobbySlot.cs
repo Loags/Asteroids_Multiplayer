@@ -1,17 +1,17 @@
 using TMPro;
+using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class LobbySlot : MonoBehaviour
+public class LobbySlot : NetworkBehaviour
 {
     [SerializeField] private Image background;
     [SerializeField] private Image readyImage;
     [SerializeField] private TMP_Text nameText;
 
-    public void UpdateSlotWithPlayerData()
+    public void UpdateSlotWithPlayerData(PlayerData _playerData)
     {
-        PlayerData playerData = GetComponent<PlayerData>();
-        nameText.text = "Player_" + playerData.playerId.ToString();
-        readyImage.color = !playerData.isReady ? Color.red : Color.green;
+        nameText.text = "Player_" + _playerData.playerId.ToString();
+        readyImage.color = !_playerData.isReady ? Color.red : Color.green;
     }
 }
