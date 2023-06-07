@@ -9,9 +9,9 @@ public class LobbySlot : NetworkBehaviour
     [SerializeField] private Image readyImage;
     [SerializeField] private TMP_Text nameText;
 
-    public void UpdateSlotWithPlayerData(PlayerData _playerData)
+    public void UpdateSlotWithPlayerData(ulong _playerId)
     {
-        nameText.text = "Player_" + _playerData.playerId.ToString();
-        readyImage.color = !_playerData.isReady ? Color.red : Color.green;
+        nameText.text = "Player_" + _playerId;
+        //readyImage.color = !_playerId.isReady ? Color.red : Color.green;
     }
 }

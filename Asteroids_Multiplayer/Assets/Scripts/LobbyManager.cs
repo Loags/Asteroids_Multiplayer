@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Unity.Netcode;
@@ -47,7 +48,6 @@ public class LobbyManager : NetworkBehaviour
     {
         Debug.Log("Client connected to the lobby");
 
-        // Perform any additional actions when a client joins the lobby
         if (IsHost)
             AddPlayerToLobbyServerRpc(_clientId);
     }
@@ -59,7 +59,7 @@ public class LobbyManager : NetworkBehaviour
 
     private void LeaveServer(bool obj)
     {
-        SceneManager.LoadScene("MainMenu");
+        SceneManager.LoadScene("MainMenu", LoadSceneMode.Single);
     }
 
     [ServerRpc]
@@ -80,18 +80,16 @@ public class LobbyManager : NetworkBehaviour
         NetworkObject networkObject = GetNetworkObject(_networkObjectId);
         GameObject spawnedPrefab = networkObject.gameObject;
 
-        PlayerData playerData = spawnedPrefab.AddComponent<PlayerData>();
-        playerData.SetPlayerData(_clientId);
-        PlayerDataManager.instance.AddPlayerData(playerData);
-
         LobbySlot lobbySlot = spawnedPrefab.GetComponent<LobbySlot>();
-        lobbySlot.UpdateSlotWithPlayerData(playerData);
+
+        if (IsHost)
+            PlayerDataManager.instance.AddPlayerData(_clientId, lobbySlot);
     }
 
     [ClientRpc]
     private void RemovePlayerToLobbyClientRpc(ulong _clientId)
     {
-        PlayerDataManager.instance.RemovePlayerData(_clientId);
+        //PlayerDataManager.instance.RemovePlayerData(_clientId);
     }
 
     public void StartGame()

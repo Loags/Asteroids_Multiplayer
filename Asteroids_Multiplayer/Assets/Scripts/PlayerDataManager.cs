@@ -3,23 +3,59 @@ using System.Collections.Generic;
 using Unity.Netcode;
 using UnityEngine;
 
-public class PlayerDataManager : MonoBehaviour
+public class PlayerDataManager : NetworkBehaviour
 {
     public static PlayerDataManager instance;
-    [SerializeField] private List<PlayerData> playerDatas = new();
+
+    /// <summary>
+    /// Network Variables
+    /// </summary>
+    public NetworkList<ulong> playerIds;
+
+    public List<LobbySlot> slots = new();
+
     private void Awake()
     {
         if (instance == null)
             instance = this;
 
         DontDestroyOnLoad(this);
+        playerIds = new NetworkList<ulong>();
     }
 
-    public void ClearPlayerData() => playerDatas.Clear();
-
-    public void AddPlayerData(PlayerData _playerData)
+    private void Start()
     {
-        playerDatas.Add(_playerData);
+        InvokeRepeating(nameof(UpdateSlotsClientRpc), 0f, 1f);
+    }
+
+    public override void OnNetworkSpawn()
+    {
+        if (IsServer) return;
+
+        playerIds.OnListChanged += OnSomeValueChanged;
+    }
+
+    private void OnSomeValueChanged(NetworkListEvent<ulong> changeevent)
+    {
+        DebugNetworkIdList();
+    }
+
+    public void DebugNetworkIdList()
+    {
+        string output = "PlayerIds - Amount: " + playerIds.Count + "\n";
+        foreach (var playerId in playerIds)
+        {
+            output += "\nPlayerID: " + playerId + "\n";
+        }
+
+        Debug.Log(output);
+    }
+
+    public void AddPlayerData(ulong _playerId, LobbySlot _slot)
+    {
+        slots.Add(_slot);
+        playerIds.Add(_playerId);
+        DebugNetworkIdList();
     }
 
     public void RemovePlayerData(ulong _playerId)
@@ -34,14 +70,15 @@ public class PlayerDataManager : MonoBehaviour
                 break;
             }
         }
+    }
 
-
-        foreach (var playerData in playerDatas)
+    [ClientRpc]
+    private void UpdateSlotsClientRpc()
+    {
+        Debug.Log("UpdateSlots");
+        for (int i = 0; i < slots.Count; i++)
         {
-            if (playerData.playerId != _playerId) continue;
-
-            playerDatas.Remove(playerData);
-            break;
+            slots[i].UpdateSlotWithPlayerData(playerIds[i]);
         }
     }
 }
