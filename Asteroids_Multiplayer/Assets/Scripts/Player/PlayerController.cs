@@ -6,7 +6,7 @@ public class PlayerController : MonoBehaviour
 {
     private MovementController movementController;
     private ShootingController shootingController;
-    private PlayerData playerData;
+    private PlayerData playerData = new();
 
     private void Awake()
     {
@@ -17,7 +17,14 @@ public class PlayerController : MonoBehaviour
 
     private void Update()
     {
-        if (!GetComponent<NetworkObject>().IsOwner) return;
+        if (!GetComponent<NetworkObject>().IsOwner)
+        {
+            Debug.Log("Not the Owner cant move");
+            Destroy(this);
+            return;
+        }
+
+        Debug.Log("Is Owner can move");
 
         movementController.HandleMovementInput();
         shootingController.HandleShootingInput();

@@ -14,8 +14,8 @@ GameObject:
   - component: {fileID: -356636144062028389}
   - component: {fileID: 2352172991925511351}
   - component: {fileID: 1374300329031045735}
-  - component: {fileID: 8888220648951279536}
-  - component: {fileID: -961520797524970226}
+  - component: {fileID: -6537697224623934309}
+  - component: {fileID: 1565418805710200179}
   m_Layer: 7
   m_Name: Obstacle
   m_TagString: Untagged
@@ -162,7 +162,7 @@ MonoBehaviour:
   SceneMigrationSynchronization: 1
   DontDestroyWithOwner: 0
   AutoObjectParentSync: 1
---- !u!114 &8888220648951279536
+--- !u!114 &-6537697224623934309
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -171,7 +171,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 3102081347870923968}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 303bdf9066ffe3e408a48d9e03926a92, type: 3}
+  m_Script: {fileID: 11500000, guid: e96cb6065543e43c4a752faaa1468eb1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   SyncPositionX: 1
@@ -192,7 +192,7 @@ MonoBehaviour:
   InLocalSpace: 0
   Interpolate: 1
   SlerpPosition: 0
---- !u!114 &-961520797524970226
+--- !u!114 &1565418805710200179
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

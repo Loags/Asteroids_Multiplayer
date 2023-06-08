@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Unity.Netcode;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PlayerDataManager : NetworkBehaviour
 {
@@ -78,12 +79,13 @@ public class PlayerDataManager : NetworkBehaviour
     private void UpdateSlots()
     {
         if (IsHost)
-            InvokeRepeating(nameof(UpdateSlotsServerRpc), 0f, 1f);
+            InvokeRepeating(nameof(UpdateSlotsServerRpc), 0f, .25f);
     }
 
     [ServerRpc]
     private void UpdateSlotsServerRpc()
     {
+        if (SceneManager.GetActiveScene().name != "Lobby") return;
         UpdateSlotsClientRpc();
     }
 

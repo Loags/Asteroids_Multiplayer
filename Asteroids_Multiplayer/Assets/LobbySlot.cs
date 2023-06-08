@@ -10,14 +10,6 @@ public class LobbySlot : NetworkBehaviour
     [SerializeField] private TMP_Text nameText;
     public ulong playerId;
     public bool isPlayerReady;
-
-
-    public void InitializeSlotData(ulong _playerId)
-    {
-        playerId = _playerId;
-        readyImage.color = Color.red;
-    }
-
     public void UpdateSlotWithPlayerData(ulong _playerId, bool _isPlayerReady)
     {
         playerId = _playerId;
