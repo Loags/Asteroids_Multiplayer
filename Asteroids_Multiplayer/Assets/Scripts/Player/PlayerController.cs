@@ -6,11 +6,13 @@ public class PlayerController : MonoBehaviour
 {
     private MovementController movementController;
     private ShootingController shootingController;
+    private PlayerData playerData;
 
     private void Awake()
     {
         movementController = GetComponent<MovementController>();
         shootingController = GetComponent<ShootingController>();
+        playerData.SetPlayerData(NetworkManager.Singleton.LocalClientId);
     }
 
     private void Update()

@@ -1,9 +1,11 @@
 using UnityEngine;
 
-public class PlayerData : MonoBehaviour
+public class PlayerData
 {
     public ulong playerId;
-    public bool isReady;
+    public int level;
+    public int damageDone;
+    
 
     public void SetPlayerData(ulong _playerId)
     {

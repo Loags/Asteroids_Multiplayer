@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Unity.Netcode;
 using UnityEngine;
 
@@ -12,7 +13,9 @@ public class PlayerDataManager : NetworkBehaviour
     /// </summary>
     public NetworkList<ulong> playerIds;
 
-    public List<LobbySlot> slots = new();
+    public NetworkList<bool> isPlayerReady;
+
+    public List<LobbySlot> lobbySlots = new();
 
     private void Awake()
     {
@@ -21,11 +24,12 @@ public class PlayerDataManager : NetworkBehaviour
 
         DontDestroyOnLoad(this);
         playerIds = new NetworkList<ulong>();
+        isPlayerReady = new NetworkList<bool>();
     }
 
     private void Start()
     {
-        InvokeRepeating(nameof(UpdateSlotsClientRpc), 0f, 1f);
+        NetworkManager.Singleton.OnServerStarted += UpdateSlots;
     }
 
     public override void OnNetworkSpawn()
@@ -40,7 +44,7 @@ public class PlayerDataManager : NetworkBehaviour
         DebugNetworkIdList();
     }
 
-    public void DebugNetworkIdList()
+    private void DebugNetworkIdList()
     {
         string output = "PlayerIds - Amount: " + playerIds.Count + "\n";
         foreach (var playerId in playerIds)
@@ -51,34 +55,47 @@ public class PlayerDataManager : NetworkBehaviour
         Debug.Log(output);
     }
 
-    public void AddPlayerData(ulong _playerId, LobbySlot _slot)
+    public void AddPlayerData(ulong _playerId)
     {
-        slots.Add(_slot);
         playerIds.Add(_playerId);
+        isPlayerReady.Add(false);
         DebugNetworkIdList();
     }
 
     public void RemovePlayerData(ulong _playerId)
     {
-        LobbySlot[] lobbySlots = FindObjectsOfType<LobbySlot>();
+        lobbySlots = FindObjectsOfType<LobbySlot>().ToList();
+
         foreach (var lobbySlot in lobbySlots)
         {
-            PlayerData playerData;
-            if (lobbySlot.gameObject.TryGetComponent(out playerData))
-            {
-                Destroy(lobbySlot.gameObject);
-                break;
-            }
+            if (lobbySlot.playerId != _playerId) continue;
+
+            Destroy(lobbySlot.gameObject);
+            break;
         }
+    }
+
+    private void UpdateSlots()
+    {
+        if (IsHost)
+            InvokeRepeating(nameof(UpdateSlotsServerRpc), 0f, 1f);
+    }
+
+    [ServerRpc]
+    private void UpdateSlotsServerRpc()
+    {
+        UpdateSlotsClientRpc();
     }
 
     [ClientRpc]
     private void UpdateSlotsClientRpc()
     {
-        Debug.Log("UpdateSlots");
-        for (int i = 0; i < slots.Count; i++)
+        int reverseIndex = lobbySlots.Count - 1;
+        foreach (var lobbySlot in lobbySlots)
         {
-            slots[i].UpdateSlotWithPlayerData(playerIds[i]);
+            lobbySlot.UpdateSlotWithPlayerData(playerIds[reverseIndex], isPlayerReady[reverseIndex]);
+
+            reverseIndex -= 1;
         }
     }
 }

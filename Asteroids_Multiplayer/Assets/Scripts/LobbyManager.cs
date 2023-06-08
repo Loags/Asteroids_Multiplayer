@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using Unity.Netcode;
 using UnityEngine.SceneManagement;
@@ -31,6 +32,9 @@ public class LobbyManager : NetworkBehaviour
     {
         if (IsHost)
             AddPlayerToLobbyServerRpc(NetworkManager.Singleton.LocalClientId);
+
+        if (!IsHost)
+            startGameButton.gameObject.SetActive(false);
     }
 
     private void OnDisable()
@@ -82,14 +86,17 @@ public class LobbyManager : NetworkBehaviour
 
         LobbySlot lobbySlot = spawnedPrefab.GetComponent<LobbySlot>();
 
+        //lobbySlot.InitializeSlotData(_clientId);
+        PlayerDataManager.instance.lobbySlots = FindObjectsOfType<LobbySlot>().ToList();
+
         if (IsHost)
-            PlayerDataManager.instance.AddPlayerData(_clientId, lobbySlot);
+            PlayerDataManager.instance.AddPlayerData(_clientId);
     }
 
     [ClientRpc]
     private void RemovePlayerToLobbyClientRpc(ulong _clientId)
     {
-        //PlayerDataManager.instance.RemovePlayerData(_clientId);
+        PlayerDataManager.instance.RemovePlayerData(_clientId);
     }
 
     public void StartGame()
@@ -99,5 +106,44 @@ public class LobbyManager : NetworkBehaviour
 
     public void ReadyButton()
     {
+        ToggleReadyServerRpc(networkManager.LocalClientId);
+    }
+
+    [ServerRpc(RequireOwnership = false)]
+    private void ToggleReadyServerRpc(ulong _clientId)
+    {
+        ToggleReadyClientRpc(_clientId);
+    }
+
+    [ClientRpc]
+    private void ToggleReadyClientRpc(ulong _clientId)
+    {
+        if (IsHost)
+        {
+            PlayerDataManager.instance.isPlayerReady[(int)_clientId] =
+                !PlayerDataManager.instance.isPlayerReady[(int)_clientId];
+            ToggleStartButton();
+        }
+
+        foreach (var lobbySlot in PlayerDataManager.instance.lobbySlots)
+            if (lobbySlot.playerId == _clientId)
+                lobbySlot.isPlayerReady = PlayerDataManager.instance.isPlayerReady[(int)_clientId];
+    }
+
+    private void ToggleStartButton()
+    {
+        bool active = false;
+        foreach (var isPlayerReady in PlayerDataManager.instance.isPlayerReady)
+        {
+            if (!isPlayerReady)
+            {
+                active = false;
+                break;
+            }
+
+            active = true;
+        }
+
+        startGameButton.gameObject.SetActive(active);
     }
 }
