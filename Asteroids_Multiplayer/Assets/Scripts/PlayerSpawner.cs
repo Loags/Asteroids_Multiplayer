@@ -13,7 +13,7 @@ public class PlayerSpawner : NetworkBehaviour
     private void Start()
     {
         Debug.Log("Try Spawning");
-        SpawnPlayerPrefabServerRpc(NetworkManager.Singleton.LocalClientId);
+        //SpawnPlayerPrefabServerRpc(NetworkManager.Singleton.LocalClientId);
     }
 
     /*private void Spawn()
@@ -22,7 +22,7 @@ public class PlayerSpawner : NetworkBehaviour
         {
             SpawnPlayerPrefabServerRpc(playerId);
         }
-    }*/
+    }
 
     [ServerRpc(RequireOwnership = false)]
     private void SpawnPlayerPrefabServerRpc(ulong _clientId)
@@ -43,5 +43,5 @@ public class PlayerSpawner : NetworkBehaviour
             // Enable local client control
             //playerObject.GetComponent<PlayerController>().EnableLocalControl();
         }
-    }
+    }*/
 }

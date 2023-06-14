@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Unity.Netcode;
@@ -7,16 +8,40 @@ using UnityEngine.SceneManagement;
 
 public class PlayerDataManager : NetworkBehaviour
 {
+    /// <summary>
+    /// Stores the player data of a client
+    /// </summary>
+    public struct PlayerData : INetworkSerializable, IEquatable<PlayerData>
+    {
+        public ulong ID;
+        public bool IsReady;
+
+        public PlayerData(ulong _id, bool _isReady)
+        {
+            ID = _id;
+            IsReady = _isReady;
+        }
+
+        public void NetworkSerialize<T>(BufferSerializer<T> serializer) where T : IReaderWriter
+        {
+            serializer.SerializeValue(ref ID);
+            serializer.SerializeValue(ref IsReady);
+        }
+
+        public bool Equals(PlayerData other)
+        {
+            return ID == other.ID;
+        }
+    }
+
+
     public static PlayerDataManager instance;
 
     /// <summary>
     /// Network Variables
+    /// <param name="playerDatas"></param> Stores the data of each client that is connected
     /// </summary>
-    public NetworkList<ulong> playerIds;
-
-    public NetworkList<bool> isPlayerReady;
-
-    public List<LobbySlot> lobbySlots = new();
+    public NetworkList<PlayerData> playerDatas;
 
     private void Awake()
     {
@@ -24,8 +49,8 @@ public class PlayerDataManager : NetworkBehaviour
             instance = this;
 
         DontDestroyOnLoad(this);
-        playerIds = new NetworkList<ulong>();
-        isPlayerReady = new NetworkList<bool>();
+
+        playerDatas = new NetworkList<PlayerData>();
     }
 
     private void Start()
@@ -35,12 +60,88 @@ public class PlayerDataManager : NetworkBehaviour
 
     public override void OnNetworkSpawn()
     {
-        if (IsServer) return;
-
-        playerIds.OnListChanged += OnSomeValueChanged;
+        playerDatas.OnListChanged += DebugNetworkPlayerData;
+        playerDatas.OnListChanged += OnPlayerDatasChanged;
+        AddNewPlayerDataServerRpc(NetworkManager.Singleton.LocalClientId, false);
     }
 
-    private void OnSomeValueChanged(NetworkListEvent<ulong> changeevent)
+    [ServerRpc(RequireOwnership = false)]
+    public void AddNewPlayerDataServerRpc(ulong _clientId, bool _isReady)
+    {
+        PlayerData newPlayerData = new PlayerData(_clientId, _isReady);
+
+        bool playerDataAlreadyExists = false;
+
+        foreach (var playerData in playerDatas)
+        {
+            if (playerData.ID == _clientId)
+            {
+                Debug.LogWarning("Trying to add data with already existing Client id: " + _clientId);
+                playerDataAlreadyExists = true;
+                break;
+            }
+        }
+
+        if (playerDataAlreadyExists) return;
+
+        playerDatas.Add(newPlayerData);
+    }
+
+    /// <summary>
+    /// Add and remove lobby slots depending on connect or disconnect
+    /// </summary>
+    /// <param name="changeevent"></param> Check if disconnect of connect
+    /// <exception cref="NotImplementedException"></exception>
+    private void OnPlayerDatasChanged(NetworkListEvent<PlayerData> changeevent)
+    {
+        PlayerData modifiedPlayerData = new(changeevent.Value.ID, changeevent.Value.IsReady);
+        switch (changeevent.Type)
+        {
+            case NetworkListEvent<PlayerData>.EventType.Add:
+                // An item was added to the list
+                Debug.Log("PlayerData added: ID = " + modifiedPlayerData.ID + ", IsReady = " +
+                          modifiedPlayerData.IsReady);
+
+                if (IsHost && LobbyManager.instance != null)
+                {
+                    LobbyManager.instance.AddLobbySlotServerRpc(changeevent.Value.ID);
+                }
+
+                LobbyManager.instance.UpdateSlots();
+                break;
+            case NetworkListEvent<PlayerData>.EventType.Remove:
+                // An item was removed from the list
+                Debug.Log("PlayerData removed: ID = " + modifiedPlayerData.ID + ", IsReady = " +
+                          modifiedPlayerData.IsReady);
+                break;
+        }
+    }
+
+
+    public void UpdatePlayerData(ulong _clientId, bool _isReady)
+    {
+        for (int i = 0; i < playerDatas.Count; i++)
+        {
+            if (playerDatas[i].ID != _clientId) continue;
+
+            PlayerData currentPlayerData = playerDatas[i];
+            currentPlayerData.IsReady = _isReady;
+            playerDatas[i] = currentPlayerData;
+        }
+    }
+
+    private void DebugNetworkPlayerData(NetworkListEvent<PlayerData> changeevent)
+    {
+        string output = "PlayerDatas - Amount: " + playerDatas.Count;
+        foreach (var playerData in playerDatas)
+        {
+            output += "\nPlayerID: " + playerData.ID + "\nPlayerIsReady: " + playerData.IsReady + "\n";
+        }
+
+        Debug.Log(output);
+    }
+
+    /*private void OnSomeValueChanged(NetworkListEvent<ulong> changeevent)
     {
         DebugNetworkIdList();
     }
@@ -74,7 +175,7 @@ public class PlayerDataManager : NetworkBehaviour
             Destroy(lobbySlot.gameObject);
             break;
         }
-    }
+    }*/
 
     private void UpdateSlots()
     {
@@ -92,12 +193,12 @@ public class PlayerDataManager : NetworkBehaviour
     [ClientRpc]
     private void UpdateSlotsClientRpc()
     {
-        int reverseIndex = lobbySlots.Count - 1;
+        /*int reverseIndex = lobbySlots.Count - 1;
         foreach (var lobbySlot in lobbySlots)
         {
             lobbySlot.UpdateSlotWithPlayerData(playerIds[reverseIndex], isPlayerReady[reverseIndex]);
 
             reverseIndex -= 1;
-        }
+        }*/
     }
 }

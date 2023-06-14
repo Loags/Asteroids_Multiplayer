@@ -1,14 +1,16 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using Unity.Netcode;
+using Unity.VisualScripting;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class LobbyManager : NetworkBehaviour
 {
+    public static LobbyManager instance;
+    public List<LobbySlot> lobbySlots = new();
+
     [SerializeField] private GameObject lobbySlotPrefab;
     [SerializeField] private Transform prefabTarget;
     [SerializeField] private Button readyButton;
@@ -18,7 +20,22 @@ public class LobbyManager : NetworkBehaviour
 
     private void Awake()
     {
+        Debug.Log("LobbyManager awake");
+        if (instance == null)
+            instance = this;
         networkManager = NetworkManager.Singleton;
+    }
+
+    public override void OnNetworkSpawn()
+    {
+        if (!IsHost) return;
+
+        foreach (var playerData in PlayerDataManager.instance.playerDatas)
+        {
+            AddLobbySlotServerRpc(playerData.ID);
+            UpdateSlots();
+            Debug.Log("Create LobbySlots as host on Awake");
+        }
     }
 
     private void OnEnable()
@@ -30,8 +47,8 @@ public class LobbyManager : NetworkBehaviour
 
     private void Start()
     {
-        if (IsHost)
-            AddPlayerToLobbyServerRpc(NetworkManager.Singleton.LocalClientId);
+        //if (IsHost)
+        //AddPlayerToLobbyServerRpc(NetworkManager.Singleton.LocalClientId);
 
         if (!IsHost)
             startGameButton.gameObject.SetActive(false);
@@ -45,20 +62,23 @@ public class LobbyManager : NetworkBehaviour
     }
 
     /// <summary>
-    /// Being called on client and server
+    /// Being called on client and host
     /// </summary>
     /// <param name="clientId"></param>
     private void OnClientConnect(ulong _clientId)
     {
         Debug.Log("Client connected to the lobby");
+        PlayerDataManager.instance.AddNewPlayerDataServerRpc(networkManager.LocalClientId, false);
 
-        if (IsHost)
-            AddPlayerToLobbyServerRpc(_clientId);
+        //if (IsHost)
+        //AddPlayerToLobbyServerRpc(_clientId);
     }
 
     private void OnClientDisconnected(ulong _clientId)
     {
-        RemovePlayerToLobbyClientRpc(_clientId);
+        Debug.Log("Client disconnected from the lobby");
+
+        //RemovePlayerToLobbyClientRpc(_clientId);
     }
 
     private void LeaveServer(bool obj)
@@ -67,44 +87,54 @@ public class LobbyManager : NetworkBehaviour
     }
 
     [ServerRpc]
-    private void AddPlayerToLobbyServerRpc(ulong _clientId)
+    public void AddLobbySlotServerRpc(ulong _clientId)
     {
         GameObject spawnedPrefab = Instantiate(lobbySlotPrefab);
 
         spawnedPrefab.GetComponent<NetworkObject>().Spawn();
-        // Has to be spawned first over the network
+        // Has to be spawned over the network first before re-parenting it
         spawnedPrefab.transform.SetParent(prefabTarget);
 
-        AddPlayerToLobbyClientRpc(_clientId, spawnedPrefab.GetComponent<NetworkObject>().NetworkObjectId);
+        AddLobbySlotClientRpc();
     }
 
     [ClientRpc]
-    private void AddPlayerToLobbyClientRpc(ulong _clientId, ulong _networkObjectId)
+    private void AddLobbySlotClientRpc()
     {
-        NetworkObject networkObject = GetNetworkObject(_networkObjectId);
-        GameObject spawnedPrefab = networkObject.gameObject;
-
-        LobbySlot lobbySlot = spawnedPrefab.GetComponent<LobbySlot>();
-
-        //lobbySlot.InitializeSlotData(_clientId);
-        PlayerDataManager.instance.lobbySlots = FindObjectsOfType<LobbySlot>().ToList();
-
-        if (IsHost)
-            PlayerDataManager.instance.AddPlayerData(_clientId);
+        lobbySlots = FindObjectsOfType<LobbySlot>().ToList();
     }
 
-    [ClientRpc]
+
+    public void UpdateSlots()
+    {
+        // Used FindObjectOfType to get all lobbyslots (reversed order)
+        int reverseIndex = lobbySlots.Count - 1;
+        Debug.Log("Slots Amount: " + lobbySlots.Count + "     PlayerDataAmount: " +
+                  PlayerDataManager.instance.playerDatas.Count);
+        foreach (var lobbySlot in lobbySlots)
+        {
+            PlayerDataManager.PlayerData currentPlayerData = PlayerDataManager.instance.playerDatas[reverseIndex];
+            lobbySlot.UpdateSlotWithPlayerData(currentPlayerData.ID, currentPlayerData.IsReady);
+            reverseIndex -= 1;
+        }
+    }
+
+    /*[ClientRpc]
     private void RemovePlayerToLobbyClientRpc(ulong _clientId)
     {
         PlayerDataManager.instance.RemovePlayerData(_clientId);
-    }
+    }*/
 
+
+    /// <summary>
+    /// Can only be called from Host
+    /// </summary>
     public void StartGame()
     {
         NetworkManager.Singleton.SceneManager.LoadScene("Game", LoadSceneMode.Single);
     }
 
-    public void ReadyButton()
+    /*public void ReadyButton()
     {
         ToggleReadyServerRpc(networkManager.LocalClientId);
     }
@@ -145,5 +175,5 @@ public class LobbyManager : NetworkBehaviour
         }
 
         startGameButton.gameObject.SetActive(active);
-    }
+    }*/
 }
