@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class MovementController : MonoBehaviour
 {
-    public float moveSpeed = 5f;
+    [SerializeField] private float moveSpeed;
+    [SerializeField] private float rotationSpeed;
 
     private Rigidbody2D rb;
 
@@ -33,10 +34,13 @@ public class MovementController : MonoBehaviour
     {
         if (direction != Vector2.zero)
         {
-            float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+            float targetAngle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
             // Adjust the angle of rotation
-            angle -= 90f;
-            transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
+            targetAngle -= 90f;
+
+            Quaternion targetRotation = Quaternion.AngleAxis(targetAngle, Vector3.forward);
+            transform.rotation =
+                Quaternion.RotateTowards(transform.rotation, targetRotation, Time.deltaTime * rotationSpeed);
         }
     }
 }

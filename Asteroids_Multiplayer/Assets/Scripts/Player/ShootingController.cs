@@ -6,6 +6,7 @@ public class ShootingController : NetworkBehaviour
 {
     [SerializeField] private GameObject projectilePrefab;
     [SerializeField] private Transform projectileSpawnPoint;
+    [SerializeField] private Transform projectileEffectSpawnPoint;
     [SerializeField] private float shootingCooldown;
 
     public void HandleShootingInput()
@@ -28,10 +29,10 @@ public class ShootingController : NetworkBehaviour
             projectileSpawnPoint.position,
             transform.rotation);
 
-        Projectile projectile = spawnedNetworkObject.gameObject.GetComponent<Projectile>();
-        projectile.Launch(transform.rotation);
+        ObjectProjectile objectProjectile = spawnedNetworkObject.gameObject.GetComponent<ObjectProjectile>();
+        objectProjectile.Launch(transform.rotation);
 
         await NetworkObjectSpawner.Singleton.WaitThenDespawn(spawnedNetworkObject, projectilePrefab,
-            projectile.lifeSpan);
+            objectProjectile.lifeSpan);
     }
 }

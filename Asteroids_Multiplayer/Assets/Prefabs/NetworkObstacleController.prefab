@@ -47,10 +47,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   minX: -8
   maxX: 8
-  minY: 5
-  maxY: 10
+  minY: 10
+  maxY: 25
   prefabsToSpawn:
-  - {fileID: 3102081347870923968, guid: 6f1b46f1c85b4b94ea22fd7d7495d017, type: 3}
+  - {fileID: 7222088183996897121, guid: 3a8e4533bbabd884a80bee7f375dae20, type: 3}
+  - {fileID: 7222088183996897121, guid: 234b32d24ebf9624482637199cd7b427, type: 3}
+  - {fileID: 7222088183996897121, guid: 9fbe6a0f08c2bd849bbc63b5fe849270, type: 3}
+  - {fileID: 7222088183996897121, guid: 03b047973f54067409ef207e0219f2b8, type: 3}
+  - {fileID: 7222088183996897121, guid: 7eecf014b551bef4f926512f1476c56c, type: 3}
+  - {fileID: 7222088183996897121, guid: 4a4030aef2474c24fa6a36195a2bbcc4, type: 3}
 --- !u!114 &6346492745463589040
 MonoBehaviour:
   m_ObjectHideFlags: 0
