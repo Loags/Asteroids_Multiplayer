@@ -15,14 +15,7 @@ public class PlayerController : MonoBehaviour
 
     private void Update()
     {
-        if (!GetComponent<NetworkObject>().IsOwner)
-        {
-            Debug.Log("Not the Owner cant move");
-            Destroy(this);
-            return;
-        }
-
-        Debug.Log("Is Owner can move");
+        if (!GetComponent<NetworkObject>().IsOwner) return;
 
         movementController.HandleMovementInput();
         shootingController.HandleShootingInput();

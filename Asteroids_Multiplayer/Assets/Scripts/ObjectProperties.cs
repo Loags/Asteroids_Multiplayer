@@ -1,30 +1,40 @@
-using System.Collections;
-using System.Collections.Generic;
 using Unity.Netcode;
 using UnityEngine;
+
+public enum ObjectTyp
+{
+    Obstacle,
+    Projectile
+}
 
 public class ObjectProperties : NetworkBehaviour
 {
     public Rigidbody2D rb;
     public float moveSpeed;
     public float lifeSpan;
+    public ObjectTyp typ;
 
-    private void Awake()
+    private Coroutine lifeCoroutine;
+
+
+    public delegate void OnObjectDespawn(ObjectTyp _typ);
+
+    public event OnObjectDespawn ObjectDespawn;
+
+
+    protected virtual void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
     }
 
-    private void Start()
+    public void OnDespawn()
     {
-        DespawnClientRpc(lifeSpan);
+        ObjectDespawn?.Invoke(typ);
     }
 
-    [ClientRpc]
-    public void DespawnClientRpc(float _lifeSpan = 0)
+    public void DespawnObject()
     {
-        if (IsHost)
-            Invoke(nameof(DespawnObject), _lifeSpan);
+        NetworkObjectSpawner.Singleton.InstantDespawn(gameObject.GetComponent<NetworkObject>(),
+            NetworkObjectPool.Singleton.GetPrefabRef(typ));
     }
-
-    private void DespawnObject() => gameObject.GetComponent<NetworkObject>().Despawn();
 }

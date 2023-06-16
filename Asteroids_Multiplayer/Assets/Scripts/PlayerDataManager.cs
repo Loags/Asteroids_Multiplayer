@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Unity.Netcode;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -53,11 +54,6 @@ public class PlayerDataManager : NetworkBehaviour
         playerDatas = new NetworkList<PlayerData>();
     }
 
-    private void Start()
-    {
-        NetworkManager.Singleton.OnServerStarted += UpdateSlots;
-    }
-
     public override void OnNetworkSpawn()
     {
         playerDatas.OnListChanged += DebugNetworkPlayerData;
@@ -104,15 +100,19 @@ public class PlayerDataManager : NetworkBehaviour
 
                 if (IsHost && LobbyManager.instance != null)
                 {
-                    LobbyManager.instance.AddLobbySlotServerRpc(changeevent.Value.ID);
+                    LobbyManager.instance.AddLobbySlotServerRpc();
                 }
 
-                LobbyManager.instance.UpdateSlots();
                 break;
+
             case NetworkListEvent<PlayerData>.EventType.Remove:
                 // An item was removed from the list
                 Debug.Log("PlayerData removed: ID = " + modifiedPlayerData.ID + ", IsReady = " +
                           modifiedPlayerData.IsReady);
+                break;
+
+            case NetworkListEvent<PlayerData>.EventType.Value:
+                Debug.Log("PlayerDataList has been Modified");
                 break;
         }
     }
@@ -120,6 +120,8 @@ public class PlayerDataManager : NetworkBehaviour
 
     public void UpdatePlayerData(ulong _clientId, bool _isReady)
     {
+        if (!IsHost) return;
+
         for (int i = 0; i < playerDatas.Count; i++)
         {
             if (playerDatas[i].ID != _clientId) continue;
@@ -163,42 +165,23 @@ public class PlayerDataManager : NetworkBehaviour
         isPlayerReady.Add(false);
         DebugNetworkIdList();
     }
-
+*/
     public void RemovePlayerData(ulong _playerId)
     {
-        lobbySlots = FindObjectsOfType<LobbySlot>().ToList();
-
-        foreach (var lobbySlot in lobbySlots)
+        foreach (var lobbySlot in LobbyManager.instance.lobbySlots)
         {
             if (lobbySlot.playerId != _playerId) continue;
 
             Destroy(lobbySlot.gameObject);
             break;
         }
-    }*/
 
-    private void UpdateSlots()
-    {
-        if (IsHost)
-            InvokeRepeating(nameof(UpdateSlotsServerRpc), 0f, .25f);
-    }
-
-    [ServerRpc]
-    private void UpdateSlotsServerRpc()
-    {
-        if (SceneManager.GetActiveScene().name != "Lobby") return;
-        UpdateSlotsClientRpc();
-    }
-
-    [ClientRpc]
-    private void UpdateSlotsClientRpc()
-    {
-        /*int reverseIndex = lobbySlots.Count - 1;
-        foreach (var lobbySlot in lobbySlots)
+        for (int i = 0; i < playerDatas.Count; i++)
         {
-            lobbySlot.UpdateSlotWithPlayerData(playerIds[reverseIndex], isPlayerReady[reverseIndex]);
+            if (playerDatas[i].ID != _playerId) continue;
 
-            reverseIndex -= 1;
-        }*/
+            playerDatas.RemoveAt(i);
+            break;
+        }
     }
 }

@@ -12,36 +12,28 @@ public class PlayerSpawner : NetworkBehaviour
 
     private void Start()
     {
-        Debug.Log("Try Spawning");
-        //SpawnPlayerPrefabServerRpc(NetworkManager.Singleton.LocalClientId);
+        SpawnPlayerPrefabServerRpc(NetworkManager.Singleton.LocalClientId);
     }
 
-    /*private void Spawn()
+    private void Spawn()
     {
-        foreach (var playerId in PlayerDataManager.instance.playerIds)
+        foreach (var playerData in PlayerDataManager.instance.playerDatas)
         {
-            SpawnPlayerPrefabServerRpc(playerId);
+            SpawnPlayerPrefabServerRpc(playerData.ID);
         }
     }
 
     [ServerRpc(RequireOwnership = false)]
     private void SpawnPlayerPrefabServerRpc(ulong _clientId)
     {
-        for (int i = 0; i < PlayerDataManager.instance.playerIds.Count; i++)
+        for (int i = 0; i < PlayerDataManager.instance.playerDatas.Count; i++)
         {
-            if (PlayerDataManager.instance.playerIds[i] == _clientId)
+            if (PlayerDataManager.instance.playerDatas[i].ID == _clientId)
                 spawnPoint = spawnPoints[i];
         }
 
-        Debug.Log("Spawning player");
         var playerObject = Instantiate(playerPrefab);
         playerObject.GetComponent<NetworkObject>().SpawnWithOwnership(_clientId);
         playerObject.transform.position = spawnPoint.position;
-
-        if (_clientId == NetworkManager.Singleton.LocalClientId)
-        {
-            // Enable local client control
-            //playerObject.GetComponent<PlayerController>().EnableLocalControl();
-        }
-    }*/
+    }
 }

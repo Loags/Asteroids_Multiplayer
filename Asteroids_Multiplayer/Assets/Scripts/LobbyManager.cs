@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -28,12 +29,13 @@ public class LobbyManager : NetworkBehaviour
 
     public override void OnNetworkSpawn()
     {
+        InvokeRepeating(nameof(UpdateSlots), 0f, 0.25f);
+
         if (!IsHost) return;
 
         foreach (var playerData in PlayerDataManager.instance.playerDatas)
         {
-            AddLobbySlotServerRpc(playerData.ID);
-            UpdateSlots();
+            AddLobbySlotServerRpc();
             Debug.Log("Create LobbySlots as host on Awake");
         }
     }
@@ -70,15 +72,15 @@ public class LobbyManager : NetworkBehaviour
         Debug.Log("Client connected to the lobby");
         PlayerDataManager.instance.AddNewPlayerDataServerRpc(networkManager.LocalClientId, false);
 
-        //if (IsHost)
-        //AddPlayerToLobbyServerRpc(_clientId);
+        if (IsHost)
+            ToggleStartButton();
     }
 
     private void OnClientDisconnected(ulong _clientId)
     {
         Debug.Log("Client disconnected from the lobby");
 
-        //RemovePlayerToLobbyClientRpc(_clientId);
+        RemovePlayerToLobbyClientRpc();
     }
 
     private void LeaveServer(bool obj)
@@ -87,30 +89,29 @@ public class LobbyManager : NetworkBehaviour
     }
 
     [ServerRpc]
-    public void AddLobbySlotServerRpc(ulong _clientId)
+    public void AddLobbySlotServerRpc()
     {
         GameObject spawnedPrefab = Instantiate(lobbySlotPrefab);
 
         spawnedPrefab.GetComponent<NetworkObject>().Spawn();
         // Has to be spawned over the network first before re-parenting it
         spawnedPrefab.transform.SetParent(prefabTarget);
-
-        AddLobbySlotClientRpc();
+        UpdateLobbySlotListClientRpc();
     }
 
     [ClientRpc]
-    private void AddLobbySlotClientRpc()
+    private void UpdateLobbySlotListClientRpc()
     {
         lobbySlots = FindObjectsOfType<LobbySlot>().ToList();
     }
 
-
-    public void UpdateSlots()
+    private void UpdateSlots()
     {
         // Used FindObjectOfType to get all lobbyslots (reversed order)
         int reverseIndex = lobbySlots.Count - 1;
-        Debug.Log("Slots Amount: " + lobbySlots.Count + "     PlayerDataAmount: " +
+        Debug.Log("UpdateSlots with Slots: " + lobbySlots.Count + "   and PlayerData: " +
                   PlayerDataManager.instance.playerDatas.Count);
+
         foreach (var lobbySlot in lobbySlots)
         {
             PlayerDataManager.PlayerData currentPlayerData = PlayerDataManager.instance.playerDatas[reverseIndex];
@@ -119,11 +120,13 @@ public class LobbyManager : NetworkBehaviour
         }
     }
 
-    /*[ClientRpc]
-    private void RemovePlayerToLobbyClientRpc(ulong _clientId)
+    [ClientRpc]
+    private void RemovePlayerToLobbyClientRpc()
     {
-        PlayerDataManager.instance.RemovePlayerData(_clientId);
-    }*/
+        if (!IsHost) return;
+        PlayerDataManager.instance.RemovePlayerData(networkManager.LocalClientId);
+        UpdateLobbySlotListClientRpc();
+    }
 
 
     /// <summary>
@@ -134,7 +137,7 @@ public class LobbyManager : NetworkBehaviour
         NetworkManager.Singleton.SceneManager.LoadScene("Game", LoadSceneMode.Single);
     }
 
-    /*public void ReadyButton()
+    public void ReadyButton()
     {
         ToggleReadyServerRpc(networkManager.LocalClientId);
     }
@@ -142,30 +145,23 @@ public class LobbyManager : NetworkBehaviour
     [ServerRpc(RequireOwnership = false)]
     private void ToggleReadyServerRpc(ulong _clientId)
     {
-        ToggleReadyClientRpc(_clientId);
-    }
+        if (!IsHost) return;
 
-    [ClientRpc]
-    private void ToggleReadyClientRpc(ulong _clientId)
-    {
-        if (IsHost)
+        foreach (var playerData in PlayerDataManager.instance.playerDatas)
         {
-            PlayerDataManager.instance.isPlayerReady[(int)_clientId] =
-                !PlayerDataManager.instance.isPlayerReady[(int)_clientId];
-            ToggleStartButton();
+            if (playerData.ID != _clientId) continue;
+            PlayerDataManager.instance.UpdatePlayerData(_clientId, !playerData.IsReady);
         }
 
-        foreach (var lobbySlot in PlayerDataManager.instance.lobbySlots)
-            if (lobbySlot.playerId == _clientId)
-                lobbySlot.isPlayerReady = PlayerDataManager.instance.isPlayerReady[(int)_clientId];
+        ToggleStartButton();
     }
 
     private void ToggleStartButton()
     {
         bool active = false;
-        foreach (var isPlayerReady in PlayerDataManager.instance.isPlayerReady)
+        foreach (var playerData in PlayerDataManager.instance.playerDatas)
         {
-            if (!isPlayerReady)
+            if (!playerData.IsReady)
             {
                 active = false;
                 break;
@@ -175,5 +171,5 @@ public class LobbyManager : NetworkBehaviour
         }
 
         startGameButton.gameObject.SetActive(active);
-    }*/
+    }
 }

@@ -1,7 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
+using System.Threading.Tasks;
 using Unity.Netcode;
-using UnityEditor;
 using UnityEngine;
 
 public class ShootingController : NetworkBehaviour
@@ -13,20 +11,27 @@ public class ShootingController : NetworkBehaviour
     public void HandleShootingInput()
     {
         if (Input.GetKeyDown(KeyCode.Space))
-            InvokeRepeating(nameof(SpawnProjectileServerRpc), 0f, shootingCooldown);
+            InvokeRepeating(nameof(ShootServerRpc), 0f, shootingCooldown);
         else if (Input.GetKeyUp(KeyCode.Space))
-            CancelInvoke(nameof(SpawnProjectileServerRpc));
+            CancelInvoke(nameof(ShootServerRpc));
     }
 
-    [ServerRpc(RequireOwnership = false)]
-    private void SpawnProjectileServerRpc()
+    [ServerRpc]
+    private void ShootServerRpc()
     {
-        GameObject projectileGO =
-            Instantiate(projectilePrefab, projectileSpawnPoint.position, projectileSpawnPoint.rotation);
+        Shoot();
+    }
 
-        projectileGO.GetComponent<NetworkObject>().Spawn();
+    private async void Shoot()
+    {
+        NetworkObject spawnedNetworkObject = NetworkObjectSpawner.SpawnObjectByTypAtPosition(projectilePrefab,
+            projectileSpawnPoint.position,
+            transform.rotation);
 
-        Projectile projectile = projectileGO.GetComponent<Projectile>();
+        Projectile projectile = spawnedNetworkObject.gameObject.GetComponent<Projectile>();
         projectile.Launch(transform.rotation);
+
+        await NetworkObjectSpawner.Singleton.WaitThenDespawn(spawnedNetworkObject, projectilePrefab,
+            projectile.lifeSpan);
     }
 }
