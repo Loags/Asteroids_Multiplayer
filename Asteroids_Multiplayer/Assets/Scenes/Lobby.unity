@@ -670,6 +670,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fdf0a051419a47c4eb2dd710f789be85, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  lobbySlots: []
   lobbySlotPrefab: {fileID: 4333735398450473218, guid: 017e44c501f6cf04abf92a177e383064, type: 3}
   prefabTarget: {fileID: 475336042}
   readyButton: {fileID: 1705709870}
