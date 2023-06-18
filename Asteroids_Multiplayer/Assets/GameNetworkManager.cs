@@ -1,5 +1,7 @@
 using System;
+using System.Collections.Generic;
 using Netcode.Transports.PhotonRealtime;
+using Photon.Realtime;
 using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -11,9 +13,11 @@ public class GameNetworkManager : MonoBehaviour
     public static GameNetworkManager instance;
 
     [SerializeField] private TMP_Text joinCode;
-    [SerializeField] private InputField inputField;
+    [SerializeField] private TMP_InputField inputField;
     private string connectionCode;
     private PhotonRealtimeTransport photon;
+
+    [SerializeField] private List<Button> buttons;
 
     private void Awake()
     {
@@ -30,26 +34,53 @@ public class GameNetworkManager : MonoBehaviour
         s = s.ToLower();
 
         photon.RoomName = s;
-        joinCode.text = s;
+        joinCode.text = "Room Code\n" + s;
+        joinCode.transform.parent.gameObject.SetActive(true);
         print(s);
 
         NetworkManager.Singleton.StartHost();
         NetworkManager.Singleton.SceneManager.LoadScene("Lobby", LoadSceneMode.Single);
+        CorrectCode();
     }
 
     public void JoinGame()
     {
-        connectionCode.ToLower();
-        if (connectionCode.Length == 5)
+        if (connectionCode != null)
+            connectionCode.ToLower();
+        if (connectionCode == null || connectionCode.Length != 5)
         {
-            photon.RoomName = connectionCode;
+            WrongCode();
+            return;
         }
 
+
+        photon.RoomName = connectionCode;
         NetworkManager.Singleton.StartClient();
+        CorrectCode();
     }
 
     public void UpdateConnectionCode(string _code)
     {
         connectionCode = _code;
+    }
+
+    private void WrongCode()
+    {
+        inputField.GetComponent<Image>().color = Color.red;
+    }
+
+    private void CorrectCode()
+    {
+        foreach (var button in buttons)
+        {
+            button.interactable = false;
+        }
+
+        inputField.interactable = false;
+    }
+
+    public void ResetInputField()
+    {
+        inputField.GetComponent<Image>().color = new Color(100, 100, 100);
     }
 }

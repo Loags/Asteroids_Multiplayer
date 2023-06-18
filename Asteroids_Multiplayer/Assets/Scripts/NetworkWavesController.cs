@@ -80,7 +80,8 @@ public class NetworkWavesController : NetworkBehaviour
     private IEnumerator WaitBeforeNextRound(float _waitDuration)
     {
         yield return new WaitForSeconds(_waitDuration);
-        StartWaveServerRpc();
+        if (IsHost)
+            StartWaveServerRpc();
     }
 
     private void IncreaseAmountToSpawn() =>

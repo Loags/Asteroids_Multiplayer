@@ -15,14 +15,6 @@ public class PlayerSpawner : NetworkBehaviour
         SpawnPlayerPrefabServerRpc(NetworkManager.Singleton.LocalClientId);
     }
 
-    private void Spawn()
-    {
-        foreach (var playerData in PlayerDataManager.instance.playerDatas)
-        {
-            SpawnPlayerPrefabServerRpc(playerData.ID);
-        }
-    }
-
     [ServerRpc(RequireOwnership = false)]
     private void SpawnPlayerPrefabServerRpc(ulong _clientId)
     {

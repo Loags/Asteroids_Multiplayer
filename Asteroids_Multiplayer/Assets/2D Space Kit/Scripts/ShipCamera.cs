@@ -6,17 +6,7 @@ public class ShipCamera : MonoBehaviour {
 	public Transform target_object;
 	public float follow_tightness;
 	Vector3 wanted_position;
-	
-	
 
-	
-	
-	// Use this for initialization
-	void Start () {
-	
-	
-	}
-	
 	// Update is called once per frame
 	void FixedUpdate () {
 		

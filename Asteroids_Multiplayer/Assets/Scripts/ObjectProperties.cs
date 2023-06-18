@@ -11,7 +11,6 @@ public class ObjectProperties : NetworkBehaviour
 {
     public Rigidbody2D rb;
     public float moveSpeed;
-    public float lifeSpan;
     public ObjectTyp typ;
 
     private Coroutine lifeCoroutine;

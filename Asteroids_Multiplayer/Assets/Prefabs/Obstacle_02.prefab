@@ -15,6 +15,10 @@ PrefabInstance:
       propertyPath: GlobalObjectIdHash
       value: 951099334
       objectReference: {fileID: 0}
+    - target: {fileID: 2352172991925511351, guid: 6f1b46f1c85b4b94ea22fd7d7495d017, type: 3}
+      propertyPath: points
+      value: 15
+      objectReference: {fileID: 0}
     - target: {fileID: 3102081347870923968, guid: 6f1b46f1c85b4b94ea22fd7d7495d017, type: 3}
       propertyPath: m_Name
       value: Obstacle_02

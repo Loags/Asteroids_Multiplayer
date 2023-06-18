@@ -1,11 +1,13 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using Unity.Netcode;
 using Unity.VisualScripting;
 using UnityEngine.SceneManagement;
-using UnityEngine.UI;
+using UnityEngine.UIElements;
+using Button = UnityEngine.UI.Button;
 
 public class LobbyManager : NetworkBehaviour
 {
@@ -16,12 +18,13 @@ public class LobbyManager : NetworkBehaviour
     [SerializeField] private Transform prefabTarget;
     [SerializeField] private Button readyButton;
     [SerializeField] private Button startGameButton;
+    [SerializeField] private ScrollView lobbyScrollView;
+    
 
     private NetworkManager networkManager;
 
     private void Awake()
     {
-        Debug.Log("LobbyManager awake");
         if (instance == null)
             instance = this;
         networkManager = NetworkManager.Singleton;
@@ -32,11 +35,15 @@ public class LobbyManager : NetworkBehaviour
         InvokeRepeating(nameof(UpdateSlots), 0f, 0.25f);
 
         if (!IsHost) return;
+        StartCoroutine(DelaySpawnSlot());
+    }
 
+    private IEnumerator DelaySpawnSlot()
+    {
+        yield return new WaitForSeconds(0.5f);
         foreach (var playerData in PlayerDataManager.instance.playerDatas)
         {
             AddLobbySlotServerRpc();
-            Debug.Log("Create LobbySlots as host on Awake");
         }
     }
 
@@ -96,6 +103,7 @@ public class LobbyManager : NetworkBehaviour
         spawnedPrefab.GetComponent<NetworkObject>().Spawn();
         // Has to be spawned over the network first before re-parenting it
         spawnedPrefab.transform.SetParent(prefabTarget);
+        //spawnedPrefab.GetComponent<AnchorSetter>().SetAnchorTopStretch();
         UpdateLobbySlotListClientRpc();
     }
 
@@ -111,7 +119,11 @@ public class LobbyManager : NetworkBehaviour
         int reverseIndex = lobbySlots.Count - 1;
         Debug.Log("UpdateSlots with Slots: " + lobbySlots.Count + "   and PlayerData: " +
                   PlayerDataManager.instance.playerDatas.Count);
-
+        if (lobbySlots.Count <= 0 || PlayerDataManager.instance.playerDatas.Count <= 0)
+        {
+            Debug.Log("lists empty");
+            return;
+        }
         foreach (var lobbySlot in lobbySlots)
         {
             PlayerDataManager.PlayerData currentPlayerData = PlayerDataManager.instance.playerDatas[reverseIndex];
@@ -171,5 +183,9 @@ public class LobbyManager : NetworkBehaviour
         }
 
         startGameButton.gameObject.SetActive(active);
+    }
+
+    public void LeaveLobby()
+    {
     }
 }

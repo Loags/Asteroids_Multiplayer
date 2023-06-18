@@ -51,8 +51,8 @@ public class NetworkObstacleController : NetworkBehaviour
 
         ObjectProperties objectProperties = spawnedNetworkObject.gameObject.GetComponent<ObjectProperties>();
 
-        await NetworkObjectSpawner.Singleton.WaitThenDespawn(spawnedNetworkObject, prefabToSpawn,
-            objectProperties.lifeSpan);
+        // await NetworkObjectSpawner.Singleton.WaitThenDespawn(spawnedNetworkObject, prefabToSpawn,
+        //     objectProperties.lifeSpan);
     }
 
     private Vector3 GenerateSpawnPoint()

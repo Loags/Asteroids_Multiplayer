@@ -8,6 +8,12 @@ public class ShootingController : NetworkBehaviour
     [SerializeField] private Transform projectileSpawnPoint;
     [SerializeField] private Transform projectileEffectSpawnPoint;
     [SerializeField] private float shootingCooldown;
+    private ulong playerID;
+
+    public override void OnNetworkSpawn()
+    {
+        playerID = NetworkManager.Singleton.LocalClientId;
+    }
 
     public void HandleShootingInput()
     {
@@ -30,9 +36,9 @@ public class ShootingController : NetworkBehaviour
             transform.rotation);
 
         ObjectProjectile objectProjectile = spawnedNetworkObject.gameObject.GetComponent<ObjectProjectile>();
-        objectProjectile.Launch(transform.rotation);
+        objectProjectile.Launch(transform.rotation, playerID);
 
-        await NetworkObjectSpawner.Singleton.WaitThenDespawn(spawnedNetworkObject, projectilePrefab,
-            objectProjectile.lifeSpan);
+        // await NetworkObjectSpawner.Singleton.WaitThenDespawn(spawnedNetworkObject, projectilePrefab,
+        //     objectProjectile.lifeSpan);
     }
 }

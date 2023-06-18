@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class MovementController : MonoBehaviour
@@ -16,18 +14,21 @@ public class MovementController : MonoBehaviour
 
     public void HandleMovementInput()
     {
-        // Read input for movement
         float moveHorizontal = Input.GetAxis("Horizontal");
         float moveVertical = Input.GetAxis("Vertical");
 
-        // Calculate movement direction
         Vector2 movement = new Vector2(moveHorizontal, moveVertical);
 
-        // Rotate triangle towards movement direction
-        RotateTowardsMovement(movement);
-
-        // Apply movement to the rigidbody
         rb.velocity = movement * moveSpeed;
+
+        Vector3 clampedPosition = transform.position;
+        clampedPosition.x = Mathf.Clamp(clampedPosition.x, WorldSizeController.worldDimensionsMin.x + 2,
+            WorldSizeController.worldDimensionsMax.x - 2);
+        clampedPosition.y = Mathf.Clamp(clampedPosition.y, WorldSizeController.worldDimensionsMin.y + 2,
+            WorldSizeController.worldDimensionsMax.y + 2);
+        transform.position = clampedPosition;
+
+        RotateTowardsMovement(movement);
     }
 
     private void RotateTowardsMovement(Vector2 direction)

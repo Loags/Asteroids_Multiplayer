@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Photon.Realtime;
 using Unity.Netcode;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -16,22 +17,37 @@ public class PlayerDataManager : NetworkBehaviour
     {
         public ulong ID;
         public bool IsReady;
+        public int Points;
+        public int Level;
+        public int Rank;
 
         public PlayerData(ulong _id, bool _isReady)
         {
             ID = _id;
             IsReady = _isReady;
+            Points = 0;
+            Level = 0;
+            Rank = 0;
         }
 
         public void NetworkSerialize<T>(BufferSerializer<T> serializer) where T : IReaderWriter
         {
             serializer.SerializeValue(ref ID);
             serializer.SerializeValue(ref IsReady);
+            serializer.SerializeValue(ref Points);
+            serializer.SerializeValue(ref Level);
+            serializer.SerializeValue(ref Rank);
         }
 
         public bool Equals(PlayerData other)
         {
             return ID == other.ID;
+        }
+
+        public int Compare(PlayerData x, PlayerData y)
+        {
+            // Compare the ranks of the player data
+            return x.Rank.CompareTo(y.Rank);
         }
     }
 
@@ -112,6 +128,14 @@ public class PlayerDataManager : NetworkBehaviour
                 break;
 
             case NetworkListEvent<PlayerData>.EventType.Value:
+                if (NetworkPlayerStatsController.instance != null)
+                {
+                    NetworkPlayerStatsController.instance.UpdateSlotsDataClientRpc();
+                    
+                    NetworkPlayerStatsController.instance.SortPlayerDataByRanking();
+                    NetworkPlayerStatsController.instance.UpdateLocalSlot();
+                }
+
                 Debug.Log("PlayerDataList has been Modified");
                 break;
         }
@@ -137,10 +161,25 @@ public class PlayerDataManager : NetworkBehaviour
         string output = "PlayerDatas - Amount: " + playerDatas.Count;
         foreach (var playerData in playerDatas)
         {
-            output += "\nPlayerID: " + playerData.ID + "\nPlayerIsReady: " + playerData.IsReady + "\n";
+            output += "\nPlayerID: " + playerData.ID + "\nPlayerIsReady: " + playerData.IsReady + "\nPlayerPoints: " +
+                      playerData.Points + "\n";
         }
 
         Debug.Log(output);
+    }
+
+    [ServerRpc(RequireOwnership = false)]
+    public void ChangePointsServerRpc(ulong _id, int _amount)
+    {
+        for (int i = 0; i < playerDatas.Count; i++)
+        {
+            if (playerDatas[i].ID != _id) continue;
+
+            PlayerData updatedPlayerData = playerDatas[i];
+            updatedPlayerData.Points += _amount;
+            playerDatas[i] = updatedPlayerData;
+            break;
+        }
     }
 
     /*private void OnSomeValueChanged(NetworkListEvent<ulong> changeevent)

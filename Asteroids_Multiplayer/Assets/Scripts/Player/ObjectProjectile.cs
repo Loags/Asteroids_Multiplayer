@@ -5,6 +5,7 @@ public class ObjectProjectile : ObjectProperties
     [SerializeField] private float damage;
     [SerializeField] private GameObject shootEffect;
     [SerializeField] private GameObject hitEffect;
+    public ulong playerID;
     public float GetDamage => damage;
 
     protected override void Awake()
@@ -17,11 +18,19 @@ public class ObjectProjectile : ObjectProperties
     {
         if (col.gameObject.layer != LayerMask.NameToLayer("Obstacle")) return;
 
-        DespawnObject();
+        if (IsHost)
+            DespawnObject();
     }
 
-    public void Launch(Quaternion _rotation)
+    private void FixedUpdate()
     {
+        if (WorldSizeController.IsObjectOutsideWorldDimensions(transform.position))
+            DespawnObject();
+    }
+
+    public void Launch(Quaternion _rotation, ulong _playerID)
+    {
+        playerID = _playerID;
         rb.velocity = (_rotation * Vector2.up * moveSpeed);
         Instantiate(shootEffect, transform.position, _rotation);
     }
