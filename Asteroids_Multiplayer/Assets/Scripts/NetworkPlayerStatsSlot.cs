@@ -13,6 +13,9 @@ public class NetworkPlayerStatsSlot : NetworkBehaviour
 
     public void UpdateSlotData(ulong _playerID, int _points, int _level, int _rank)
     {
+        if (_playerID == 0)
+            Debug.Log("playerData ID: " + _playerID + "    level " + _level + "    points " +
+                      _points + "    rank " + _rank);
         playerID = _playerID;
         playerLevel.text = "Lv. " + _level;
         playerPoints.text = _points + " pts.";

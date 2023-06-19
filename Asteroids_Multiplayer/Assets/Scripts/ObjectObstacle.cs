@@ -26,7 +26,7 @@ public class ObjectObstacle : ObjectProperties
         Vector3 velocity = new Vector3(0, -moveSpeed);
         rb.velocity = velocity;
 
-        if (WorldSizeController.IsObjectOutsideWorldDimensions(transform.position))
+        if (WorldSizeController.IsObjectOutsideWorldDimensions(transform.position) && IsHost)
             DespawnObject();
     }
 

@@ -19,7 +19,7 @@ public class LobbyManager : NetworkBehaviour
     [SerializeField] private Button readyButton;
     [SerializeField] private Button startGameButton;
     [SerializeField] private ScrollView lobbyScrollView;
-    
+
 
     private NetworkManager networkManager;
 
@@ -124,6 +124,7 @@ public class LobbyManager : NetworkBehaviour
             Debug.Log("lists empty");
             return;
         }
+
         foreach (var lobbySlot in lobbySlots)
         {
             PlayerDataManager.PlayerData currentPlayerData = PlayerDataManager.instance.playerDatas[reverseIndex];
@@ -187,5 +188,7 @@ public class LobbyManager : NetworkBehaviour
 
     public void LeaveLobby()
     {
+        NetworkManager.Singleton.Shutdown();
+        SceneManager.LoadScene("MainMenu", LoadSceneMode.Single);
     }
 }

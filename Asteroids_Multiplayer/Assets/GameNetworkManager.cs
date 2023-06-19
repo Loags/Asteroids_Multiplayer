@@ -16,9 +16,7 @@ public class GameNetworkManager : MonoBehaviour
     [SerializeField] private TMP_InputField inputField;
     private string connectionCode;
     private PhotonRealtimeTransport photon;
-
-    [SerializeField] private List<Button> buttons;
-
+    
     private void Awake()
     {
         if (instance == null)
@@ -40,7 +38,6 @@ public class GameNetworkManager : MonoBehaviour
 
         NetworkManager.Singleton.StartHost();
         NetworkManager.Singleton.SceneManager.LoadScene("Lobby", LoadSceneMode.Single);
-        CorrectCode();
     }
 
     public void JoinGame()
@@ -53,10 +50,8 @@ public class GameNetworkManager : MonoBehaviour
             return;
         }
 
-
         photon.RoomName = connectionCode;
         NetworkManager.Singleton.StartClient();
-        CorrectCode();
     }
 
     public void UpdateConnectionCode(string _code)
@@ -64,19 +59,10 @@ public class GameNetworkManager : MonoBehaviour
         connectionCode = _code;
     }
 
+
     private void WrongCode()
     {
         inputField.GetComponent<Image>().color = Color.red;
-    }
-
-    private void CorrectCode()
-    {
-        foreach (var button in buttons)
-        {
-            button.interactable = false;
-        }
-
-        inputField.interactable = false;
     }
 
     public void ResetInputField()

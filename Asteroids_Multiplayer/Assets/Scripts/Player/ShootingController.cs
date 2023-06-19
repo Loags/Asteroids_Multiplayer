@@ -1,3 +1,4 @@
+using System;
 using System.Threading.Tasks;
 using Unity.Netcode;
 using UnityEngine;
@@ -8,11 +9,11 @@ public class ShootingController : NetworkBehaviour
     [SerializeField] private Transform projectileSpawnPoint;
     [SerializeField] private Transform projectileEffectSpawnPoint;
     [SerializeField] private float shootingCooldown;
-    private ulong playerID;
+    private PlayerController playerController;
 
-    public override void OnNetworkSpawn()
+    private void Awake()
     {
-        playerID = NetworkManager.Singleton.LocalClientId;
+        playerController = GetComponent<PlayerController>();
     }
 
     public void HandleShootingInput()
@@ -29,14 +30,14 @@ public class ShootingController : NetworkBehaviour
         Shoot();
     }
 
-    private async void Shoot()
+    private void Shoot()
     {
         NetworkObject spawnedNetworkObject = NetworkObjectSpawner.SpawnObjectByTypAtPosition(projectilePrefab,
             projectileSpawnPoint.position,
             transform.rotation);
 
         ObjectProjectile objectProjectile = spawnedNetworkObject.gameObject.GetComponent<ObjectProjectile>();
-        objectProjectile.Launch(transform.rotation, playerID);
+        objectProjectile.Launch(transform.rotation, playerController.playerID);
 
         // await NetworkObjectSpawner.Singleton.WaitThenDespawn(spawnedNetworkObject, projectilePrefab,
         //     objectProjectile.lifeSpan);

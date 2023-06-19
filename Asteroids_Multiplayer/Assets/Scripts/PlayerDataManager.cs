@@ -130,11 +130,10 @@ public class PlayerDataManager : NetworkBehaviour
             case NetworkListEvent<PlayerData>.EventType.Value:
                 if (NetworkPlayerStatsController.instance != null)
                 {
-                    NetworkPlayerStatsController.instance.UpdateSlotsDataClientRpc();
-                    
-                    NetworkPlayerStatsController.instance.SortPlayerDataByRanking();
-                    NetworkPlayerStatsController.instance.UpdateLocalSlot();
+                    NetworkPlayerStatsController.instance.SortPlayerDataByRankingClientRpc();
                 }
+                else
+                    Debug.Log("NetworkPlayerStatsController is NULL!");
 
                 Debug.Log("PlayerDataList has been Modified");
                 break;

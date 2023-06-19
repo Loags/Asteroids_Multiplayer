@@ -1,6 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using Unity.Netcode;
 using UnityEngine;
 
@@ -10,6 +7,7 @@ public class PlayerController : NetworkBehaviour
     private ShootingController shootingController;
     private CameraController cameraController;
     private GameObject camera;
+    public ulong playerID;
 
 
     private void Awake()
@@ -21,9 +19,10 @@ public class PlayerController : NetworkBehaviour
 
     public override void OnNetworkSpawn()
     {
-        
+        Debug.Log("Player ID: " + gameObject.GetComponent<NetworkObject>().OwnerClientId);
+        playerID = gameObject.GetComponent<NetworkObject>().OwnerClientId;
+
         if (!GetComponent<NetworkObject>().IsOwner) return;
-        Debug.Log("NetworkSpawnCamera getter");
         camera.SetActive(true);
         cameraController = GetComponentInChildren<CameraController>();
     }
