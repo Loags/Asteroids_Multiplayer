@@ -16,10 +16,8 @@ public class ObjectBlink : MonoBehaviour
     public void StartBlinking()
     {
         if (blinkCoroutine != null)
-        {
-            // Stop the previous blink coroutine if it's already running
             StopCoroutine(blinkCoroutine);
-        }
+        
 
         blinkCoroutine = StartCoroutine(BlinkCoroutine());
     }
@@ -27,11 +25,9 @@ public class ObjectBlink : MonoBehaviour
     public void StopBlinking()
     {
         if (blinkCoroutine != null)
-        {
             StopCoroutine(blinkCoroutine);
-        }
+        
 
-        // Ensure the object is visible after stopping blinking
         objectRenderer.enabled = true;
     }
 
@@ -39,7 +35,6 @@ public class ObjectBlink : MonoBehaviour
     {
         while (true)
         {
-            // Toggle the object's visibility
             objectRenderer.enabled = !objectRenderer.enabled;
 
             yield return new WaitForSeconds(blinkInterval);

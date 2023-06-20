@@ -25,7 +25,7 @@ public class MovementController : MonoBehaviour
         clampedPosition.x = Mathf.Clamp(clampedPosition.x, WorldSizeController.worldDimensionsMin.x + 2,
             WorldSizeController.worldDimensionsMax.x - 2);
         clampedPosition.y = Mathf.Clamp(clampedPosition.y, WorldSizeController.worldDimensionsMin.y + 2,
-            WorldSizeController.worldDimensionsMax.y + 2);
+            WorldSizeController.worldDimensionsMax.y - 2);
         transform.position = clampedPosition;
 
         RotateTowardsMovement(movement);
@@ -36,7 +36,6 @@ public class MovementController : MonoBehaviour
         if (direction != Vector2.zero)
         {
             float targetAngle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
-            // Adjust the angle of rotation
             targetAngle -= 90f;
 
             Quaternion targetRotation = Quaternion.AngleAxis(targetAngle, Vector3.forward);

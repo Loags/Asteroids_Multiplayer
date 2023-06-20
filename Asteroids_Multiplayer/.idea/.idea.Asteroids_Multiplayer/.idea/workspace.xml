@@ -3,21 +3,12 @@
   <component name="ChangeListManager">
     <list default="true" id="0713fd8e-2b3b-4abd-81e9-8328f26cb79f" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Asteroids_Multiplayer/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Asteroids_Multiplayer/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/2D Space Kit/Prefabs/Muzzle Flash.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/2D Space Kit/Prefabs/Muzzle Flash.prefab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/2D Space Kit/Scripts/PSDestroy.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/2D Space Kit/Scripts/PSDestroy.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/DefaultNetworkPrefabs.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/DefaultNetworkPrefabs.asset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/NetworkObstacleController.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/NetworkObstacleController.prefab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/NetworkWavesController.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/NetworkWavesController.prefab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/Obstacle_Base.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/Obstacle_Base.prefab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/Player.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/Player.prefab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/PlayerSpawner.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/PlayerSpawner.prefab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/Projectile.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/Projectile.prefab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scenes/Game.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/Game.unity" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/NetworkObstacleController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/NetworkObstacleController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/NetworkWavesController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/NetworkWavesController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/ObjectObstacle.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/ObjectObstacle.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Player/ObjectProjectile.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Player/ObjectProjectile.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/WorldSizeController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/WorldSizeController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/GameNetworkManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/GameNetworkManager.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/DontDestroyOnLoadHelper.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/DontDestroyOnLoadHelper.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/LobbyManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/LobbyManager.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/ObjectBlink.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/ObjectBlink.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Player/MovementController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Player/MovementController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/PlayerDataManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/PlayerDataManager.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -31,6 +22,7 @@
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/8a522b806eac9bb894e6e4c5fe87f353457535e769447e79c6b396beecb5d0/System.Threading.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/2D Space Kit/Scripts/Projectile.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="mock://E:/Unity Projects/Asteroids_Multiplayer/Asteroids_Multiplayer/Assets/DefaultNetworkPrefabs.asset" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://E:/Unity Projects/Asteroids_Multiplayer/Asteroids_Multiplayer/Assets/DefaultNetworkPrefabs.asset" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/GameNetworkManager.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/LobbySlot.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="mock://E:/Unity Projects/Asteroids_Multiplayer/Asteroids_Multiplayer/Assets/Prefabs/Player.prefab" root0="SKIP_HIGHLIGHTING" />
@@ -41,6 +33,7 @@
     <setting file="mock://E:/Unity Projects/Asteroids_Multiplayer/Asteroids_Multiplayer/Assets/Scripts/ClientNetworkTransform.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="mock://E:/Unity Projects/Asteroids_Multiplayer/Asteroids_Multiplayer/Assets/Scripts/ClientNetworkTransform.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="mock://E:/Unity Projects/Asteroids_Multiplayer/Asteroids_Multiplayer/Assets/Scripts/ClientNetworkTransform.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Scripts/DontDestroyOnLoadController.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/DontDestroyOnLoadHelper.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/LobbyManager.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/NetworkObjectPool.cs" root0="FORCE_HIGHLIGHTING" />
@@ -177,7 +170,7 @@
       <workItem from="1687010201841" duration="3335000" />
       <workItem from="1687075270115" duration="19466000" />
       <workItem from="1687190740281" duration="9692000" />
-      <workItem from="1687266074202" duration="14698000" />
+      <workItem from="1687266074202" duration="15722000" />
     </task>
     <task id="LOCAL-00001" summary="blub">
       <created>1686162279310</created>
@@ -263,7 +256,14 @@
       <option name="project" value="LOCAL" />
       <updated>1687273287706</updated>
     </task>
-    <option name="localTasksCounter" value="13" />
+    <task id="LOCAL-00013" summary="aaa">
+      <created>1687280970184</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1687280970184</updated>
+    </task>
+    <option name="localTasksCounter" value="14" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -296,6 +296,7 @@
     <MESSAGE value="blub" />
     <MESSAGE value="UpdatePoints has to be changed only being updated locally atm" />
     <MESSAGE value="fixed points" />
-    <option name="LAST_COMMIT_MESSAGE" value="fixed points" />
+    <MESSAGE value="aaa" />
+    <option name="LAST_COMMIT_MESSAGE" value="aaa" />
   </component>
 </project>

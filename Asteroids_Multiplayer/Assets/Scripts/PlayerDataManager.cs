@@ -37,12 +37,6 @@ public class PlayerDataManager : NetworkBehaviour
         {
             return ID == other.ID;
         }
-
-        public int Compare(PlayerData x, PlayerData y)
-        {
-            // Compare the ranks of the player data
-            return x.Rank.CompareTo(y.Rank);
-        }
     }
 
 
@@ -59,7 +53,7 @@ public class PlayerDataManager : NetworkBehaviour
         if (instance == null)
             instance = this;
 
-        DontDestroyOnLoad(this);
+        gameObject.AddToDontDestroyOnLoad();
 
         playerDatas = new NetworkList<PlayerData>();
     }
@@ -104,27 +98,14 @@ public class PlayerDataManager : NetworkBehaviour
         switch (changeevent.Type)
         {
             case NetworkListEvent<PlayerData>.EventType.Add:
-                // An item was added to the list
-                Debug.Log("PlayerData added: ID = " + modifiedPlayerData.ID + ", IsReady = " +
-                          modifiedPlayerData.IsReady);
-
                 if (IsHost && LobbyManager.instance != null)
                     LobbyManager.instance.AddLobbySlotServerRpc();
-
                 break;
-
             case NetworkListEvent<PlayerData>.EventType.Remove:
-                // An item was removed from the list
-                Debug.Log("PlayerData removed: ID = " + modifiedPlayerData.ID + ", IsReady = " +
-                          modifiedPlayerData.IsReady);
                 break;
-
             case NetworkListEvent<PlayerData>.EventType.Value:
-                Debug.Log("PlayerDataList has been Modified");
-
                 if (NetworkPlayerStatsController.instance != null)
                     NetworkPlayerStatsController.instance.SortPlayerDataByRanking();
-
                 break;
         }
     }

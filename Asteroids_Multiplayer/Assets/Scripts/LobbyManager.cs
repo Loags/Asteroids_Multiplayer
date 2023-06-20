@@ -87,7 +87,7 @@ public class LobbyManager : NetworkBehaviour
     {
         Debug.Log("Client disconnected from the lobby");
 
-        RemovePlayerToLobbyClientRpc();
+        RemovePlayerFromLobbyClientRpc();
     }
 
     private void LeaveServer(bool obj)
@@ -115,16 +115,8 @@ public class LobbyManager : NetworkBehaviour
 
     private void UpdateSlots()
     {
-        // Used FindObjectOfType to get all lobbyslots (reversed order)
         int reverseIndex = lobbySlots.Count - 1;
-        Debug.Log("UpdateSlots with Slots: " + lobbySlots.Count + "   and PlayerData: " +
-                  PlayerDataManager.instance.playerDatas.Count);
-        if (lobbySlots.Count <= 0 || PlayerDataManager.instance.playerDatas.Count <= 0)
-        {
-            Debug.Log("lists empty");
-            return;
-        }
-
+        
         foreach (var lobbySlot in lobbySlots)
         {
             PlayerDataManager.PlayerData currentPlayerData = PlayerDataManager.instance.playerDatas[reverseIndex];
@@ -134,7 +126,7 @@ public class LobbyManager : NetworkBehaviour
     }
 
     [ClientRpc]
-    private void RemovePlayerToLobbyClientRpc()
+    private void RemovePlayerFromLobbyClientRpc()
     {
         if (!IsHost) return;
         PlayerDataManager.instance.RemovePlayerData(networkManager.LocalClientId);
@@ -188,7 +180,7 @@ public class LobbyManager : NetworkBehaviour
 
     public void LeaveLobby()
     {
-        NetworkManager.Singleton.Shutdown();
-        SceneManager.LoadScene("MainMenu", LoadSceneMode.Single);
+        networkManager.Shutdown();
+        DontDestroyOnLoadController.DestroyAll();
     }
 }

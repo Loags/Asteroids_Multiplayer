@@ -16,13 +16,14 @@ public class GameNetworkManager : MonoBehaviour
     [SerializeField] private TMP_InputField inputField;
     private string connectionCode;
     private PhotonRealtimeTransport photon;
-    
+
     private void Awake()
     {
         if (instance == null)
             instance = this;
 
         photon = GetComponent<PhotonRealtimeTransport>();
+        gameObject.AddToDontDestroyOnLoad();
     }
 
     public void StartHost()
