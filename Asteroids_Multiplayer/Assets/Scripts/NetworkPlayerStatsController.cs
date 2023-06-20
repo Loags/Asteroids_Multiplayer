@@ -1,11 +1,7 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
-using ExitGames.Client.Photon.StructWrapping;
 using Unity.Netcode;
 using UnityEngine;
-using UnityEngine.Analytics;
 
 public class NetworkPlayerStatsController : NetworkBehaviour
 {
@@ -26,15 +22,8 @@ public class NetworkPlayerStatsController : NetworkBehaviour
     {
         if (!IsHost) return;
 
-
         // Spawn RankingSlots
         InitializeSlotsServerRpc();
-    }
-
-    private void Initialize()
-    {
-        SortPlayerDataByRankingClientRpc();
-        UpdateLocalSlot();
     }
 
     [ServerRpc]
@@ -46,7 +35,6 @@ public class NetworkPlayerStatsController : NetworkBehaviour
 
             GameObject spawnedPrefab = Instantiate(playerStatsSlotPrefab);
             NetworkPlayerStatsSlot currentPlayerStatsSlot = spawnedPrefab.GetComponent<NetworkPlayerStatsSlot>();
-            Debug.Log("ID ON INITIALIZE SERVERRPC: " + currentPlayerData.ID);
             currentPlayerStatsSlot.UpdateSlotData(currentPlayerData.ID, currentPlayerData.Points,
                 currentPlayerData.Level,
                 currentPlayerData.Rank);
@@ -54,11 +42,6 @@ public class NetworkPlayerStatsController : NetworkBehaviour
 
             spawnedPrefab.GetComponent<NetworkObject>().Spawn();
             spawnedPrefab.transform.SetParent(targetPos);
-        }
-
-        foreach (var networkPlayerStatsSlot in slots)
-        {
-            Debug.Log("ID IN SERVERRPC: " + networkPlayerStatsSlot.playerID);
         }
 
         SortPlayerDataByRankingClientRpc();
@@ -70,8 +53,6 @@ public class NetworkPlayerStatsController : NetworkBehaviour
     /// </summary>
     private void UpdateOtherSlotsData()
     {
-        Debug.Log("Update other slot data");
-
         GameObject slotHolder = GameObject.FindGameObjectWithTag("RankingSlotHolder");
         slots = slotHolder.GetComponentsInChildren<NetworkPlayerStatsSlot>().ToList();
         if (slots.Count <= 0) return;
@@ -96,7 +77,6 @@ public class NetworkPlayerStatsController : NetworkBehaviour
     /// </summary>
     private void UpdateLocalSlot()
     {
-        Debug.Log("UpdateLocalSlot");
         foreach (var currentPlayerData in sortedDatas)
         {
             if (currentPlayerData.ID != NetworkManager.Singleton.LocalClientId) continue;
@@ -108,18 +88,23 @@ public class NetworkPlayerStatsController : NetworkBehaviour
     }
 
     [ClientRpc]
-    public void SortPlayerDataByRankingClientRpc()
+    private void SortPlayerDataByRankingClientRpc()
     {
-        Debug.Log("SortPlayerDataByRanking");
+        SortPlayerDataByRanking();
+    }
+
+    public void SortPlayerDataByRanking()
+    {
         sortedDatas.Clear();
         foreach (PlayerDataManager.PlayerData playerData in PlayerDataManager.instance.playerDatas)
         {
             sortedDatas.Add(playerData);
         }
 
+        // Sort descending by points
+        sortedDatas.Sort((x, y) => y.Points.CompareTo(x.Points));
 
-        // The rank calculation has to be locally because every change in the NetworkList
-        // would call SortPlayerDataByRankingClientRpc and causes a StackOverflow
+        // Update the Rank based on the sorted order
         for (int i = 0; i < sortedDatas.Count; i++)
         {
             PlayerDataManager.PlayerData updatedPlayerData = sortedDatas[i];
@@ -127,25 +112,14 @@ public class NetworkPlayerStatsController : NetworkBehaviour
             sortedDatas[i] = updatedPlayerData;
         }
 
-        sortedDatas.Sort(new PlayerDataComparer());
-
-        Debug.Log("SortedList");
         foreach (var playerData in sortedDatas)
         {
-            Debug.Log("playerData ID: " + playerData.ID + "    level " + playerData.Level + "    points " +
+            Debug.Log("SortPlayerDataByRanking playerData ID: " + playerData.ID + "    level " + playerData.Level +
+                      "    points " +
                       playerData.Points + "    rank " + playerData.Rank);
         }
 
         UpdateLocalSlot();
         UpdateOtherSlotsData();
-    }
-}
-
-public class PlayerDataComparer : IComparer<PlayerDataManager.PlayerData>
-{
-    public int Compare(PlayerDataManager.PlayerData x, PlayerDataManager.PlayerData y)
-    {
-        // Compare the ranks of the player data
-        return x.Rank.CompareTo(y.Rank);
     }
 }

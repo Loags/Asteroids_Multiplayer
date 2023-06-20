@@ -1,12 +1,6 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using Photon.Realtime;
 using Unity.Netcode;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public class PlayerDataManager : NetworkBehaviour
 {
@@ -115,9 +109,7 @@ public class PlayerDataManager : NetworkBehaviour
                           modifiedPlayerData.IsReady);
 
                 if (IsHost && LobbyManager.instance != null)
-                {
                     LobbyManager.instance.AddLobbySlotServerRpc();
-                }
 
                 break;
 
@@ -128,14 +120,11 @@ public class PlayerDataManager : NetworkBehaviour
                 break;
 
             case NetworkListEvent<PlayerData>.EventType.Value:
-                if (NetworkPlayerStatsController.instance != null)
-                {
-                    NetworkPlayerStatsController.instance.SortPlayerDataByRankingClientRpc();
-                }
-                else
-                    Debug.Log("NetworkPlayerStatsController is NULL!");
-
                 Debug.Log("PlayerDataList has been Modified");
+
+                if (NetworkPlayerStatsController.instance != null)
+                    NetworkPlayerStatsController.instance.SortPlayerDataByRanking();
+
                 break;
         }
     }
@@ -170,6 +159,8 @@ public class PlayerDataManager : NetworkBehaviour
     [ServerRpc(RequireOwnership = false)]
     public void ChangePointsServerRpc(ulong _id, int _amount)
     {
+        if (!IsHost) return;
+
         for (int i = 0; i < playerDatas.Count; i++)
         {
             if (playerDatas[i].ID != _id) continue;
@@ -181,29 +172,6 @@ public class PlayerDataManager : NetworkBehaviour
         }
     }
 
-    /*private void OnSomeValueChanged(NetworkListEvent<ulong> changeevent)
-    {
-        DebugNetworkIdList();
-    }
-
-    private void DebugNetworkIdList()
-    {
-        string output = "PlayerIds - Amount: " + playerIds.Count + "\n";
-        foreach (var playerId in playerIds)
-        {
-            output += "\nPlayerID: " + playerId + "\n";
-        }
-
-        Debug.Log(output);
-    }
-
-    public void AddPlayerData(ulong _playerId)
-    {
-        playerIds.Add(_playerId);
-        isPlayerReady.Add(false);
-        DebugNetworkIdList();
-    }
-*/
     public void RemovePlayerData(ulong _playerId)
     {
         foreach (var lobbySlot in LobbyManager.instance.lobbySlots)
