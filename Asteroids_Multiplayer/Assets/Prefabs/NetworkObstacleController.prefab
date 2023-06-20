@@ -45,10 +45,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6a40159754dcc4149bf121914790895f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  minX: -8
-  maxX: 8
-  minY: 10
-  maxY: 25
+  randomDirOffSet: 0
+  spawnAreasList:
+  - minX: -30
+    maxX: 17
+    minY: 18
+    maxY: 24
+  - minX: -30
+    maxX: 17
+    minY: -22
+    maxY: -17
+  - minX: -30
+    maxX: -24
+    minY: -20
+    maxY: -24
+  - minX: 11
+    maxX: 17
+    minY: -20
+    maxY: -24
   prefabsToSpawn:
   - {fileID: 7222088183996897121, guid: 3a8e4533bbabd884a80bee7f375dae20, type: 3}
   - {fileID: 7222088183996897121, guid: 234b32d24ebf9624482637199cd7b427, type: 3}

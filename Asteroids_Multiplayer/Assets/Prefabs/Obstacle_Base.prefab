@@ -89,9 +89,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rb: {fileID: 0}
   moveSpeed: 1
-  lifeSpan: 30
   typ: 0
+  moveDir: {x: 0, y: 0, z: 0}
   health: 10
+  points: 0
+  moveSpeedModifier: 1.35
+  moveDirOffSet: 0.7
 --- !u!114 &1374300329031045735
 MonoBehaviour:
   m_ObjectHideFlags: 0

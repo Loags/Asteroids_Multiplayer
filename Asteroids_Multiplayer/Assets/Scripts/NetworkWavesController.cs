@@ -7,14 +7,10 @@ public class NetworkWavesController : NetworkBehaviour
 {
     public static NetworkWavesController Singleton { get; private set; }
 
-    [Header("Choose value between 1 and 100")] [SerializeField]
-    private float increasePercentage;
-
-    [SerializeField] private int amountToSpawn;
-    [SerializeField] private int timeBeforeNextRound;
+    [SerializeField] private float spawnIntervall;
+    [SerializeField] private int maxAmountObstacles;
     private NetworkVariable<int> amountAlive = new NetworkVariable<int>();
-    private Coroutine waveClearCoroutine;
-    private bool waveCleared = false;
+    private Coroutine spawnCoroutine;
 
     public void Awake()
     {
@@ -30,8 +26,7 @@ public class NetworkWavesController : NetworkBehaviour
 
     public override void OnNetworkSpawn()
     {
-        amountAlive.OnValueChanged += AmountChanged;
-        NetworkObjectPool.InstatiatePoolDone += StartWaveServerRpc;
+        NetworkObjectPool.InstatiatePoolDone += StartSpawningWithCoroutine;
     }
 
     public void ObjectStatusTracker(ObjectTyp _typ)
@@ -48,42 +43,37 @@ public class NetworkWavesController : NetworkBehaviour
         }
     }
 
-    private void AmountChanged(int previousvalue, int newvalue)
-    {
-        if (newvalue > 0) return;
-        amountAlive.Value = 0;
-
-        if (waveCleared) return;
-        WaveCleared();
-    }
-
     [ServerRpc]
-    private void StartWaveServerRpc()
+    private void SpawnObjectServerRpc()
     {
-        NetworkObstacleController.Singleton.SpawnObstacles(amountToSpawn);
-        amountAlive.Value = amountToSpawn;
-        waveCleared = false;
+        NetworkObstacleController.Singleton.SpawnObstacles(1);
+        amountAlive.Value += 1;
     }
 
-
-    private void WaveCleared()
+    private void StartSpawningWithCoroutine()
     {
-        waveCleared = true;
-        IncreaseAmountToSpawn();
-
-        if (waveClearCoroutine != null)
-            StopCoroutine(waveClearCoroutine);
-
-        waveClearCoroutine = StartCoroutine(WaitBeforeNextRound(timeBeforeNextRound));
+        spawnCoroutine = StartCoroutine(SpawnObjectsCoroutine());
     }
 
-    private IEnumerator WaitBeforeNextRound(float _waitDuration)
+    private void StopSpawningWithCoroutine()
     {
-        yield return new WaitForSeconds(_waitDuration);
-        if (IsHost)
-            StartWaveServerRpc();
+        if (spawnCoroutine != null)
+        {
+            StopCoroutine(spawnCoroutine);
+            spawnCoroutine = null;
+        }
     }
 
-    private void IncreaseAmountToSpawn() =>
-        amountToSpawn = Mathf.CeilToInt(amountToSpawn * (1f + increasePercentage / 100));
+    private IEnumerator SpawnObjectsCoroutine()
+    {
+        while (true)
+        {
+            if (amountAlive.Value < maxAmountObstacles)
+            {
+                SpawnObjectServerRpc();
+            }
+
+            yield return new WaitForSeconds(spawnIntervall);
+        }
+    }
 }

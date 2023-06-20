@@ -1,3 +1,4 @@
+using Unity.Netcode;
 using UnityEngine;
 
 public class ObjectProjectile : ObjectProperties
@@ -32,6 +33,6 @@ public class ObjectProjectile : ObjectProperties
     {
         playerID = _playerID;
         rb.velocity = (_rotation * Vector2.up * moveSpeed);
-        Instantiate(shootEffect, transform.position, _rotation);
+        Instantiate(shootEffect, transform.position, _rotation).GetComponent<NetworkObject>().Spawn();
     }
 }

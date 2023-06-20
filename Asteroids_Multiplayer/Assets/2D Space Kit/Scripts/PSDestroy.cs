@@ -1,15 +1,25 @@
 ﻿using UnityEngine;
 using System.Collections;
+using Unity.Netcode;
 
-public class PSDestroy : MonoBehaviour {
+public class PSDestroy : NetworkBehaviour
+{
+    // Use this for initialization
+    void Start()
+    {
+        if (IsHost)
+            StartDespawnAfterDelay();
+    }
 
-	// Use this for initialization
-	void Start () {
-		Destroy(gameObject, GetComponent<ParticleSystem>().duration);
-	}
-	
-	// Update is called once per frame
-	void Update () {
-	
-	}
+    public void StartDespawnAfterDelay()
+    {
+        StartCoroutine(DespawnAfterDelay());
+    }
+
+    private IEnumerator DespawnAfterDelay()
+    {
+        yield return new WaitForSeconds(1f);
+
+        GetComponent<NetworkObject>().Despawn();
+    }
 }

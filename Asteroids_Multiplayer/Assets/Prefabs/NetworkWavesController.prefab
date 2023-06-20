@@ -45,9 +45,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c03958c4c7d6d9f40bb15fcba52bd8ab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  increasePercentage: 10
-  amountToSpawn: 10
-  timeBeforeNextRound: 5
+  spawnIntervall: 3
+  maxAmountObstacles: 20
 --- !u!114 &3297686632569521916
 MonoBehaviour:
   m_ObjectHideFlags: 0
