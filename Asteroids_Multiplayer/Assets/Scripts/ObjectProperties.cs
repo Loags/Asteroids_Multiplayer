@@ -31,9 +31,9 @@ public class ObjectProperties : NetworkBehaviour
         ObjectDespawn?.Invoke(typ);
     }
 
-    public void DespawnObject()
-    {
-        NetworkObjectSpawner.Singleton.InstantDespawn(gameObject.GetComponent<NetworkObject>(),
-            NetworkObjectPool.Singleton.GetPrefabRef(typ));
-    }
+    protected void DespawnObject() => NetworkObjectSpawner.Singleton.InstantDespawn(
+        gameObject.GetComponent<NetworkObject>(),
+        NetworkObjectPool.Singleton.GetPrefabRef(typ));
+
+    protected void LocalDespawn() => ObjectPool.instance.ReturnObjectToPool(gameObject);
 }

@@ -7,8 +7,9 @@ public class PSDestroy : NetworkBehaviour
     // Use this for initialization
     void Start()
     {
-        if (IsHost)
-            StartDespawnAfterDelay();
+        //if (IsHost)
+        //StartDespawnAfterDelay();
+        Destroy(gameObject, 1f);
     }
 
     public void StartDespawnAfterDelay()

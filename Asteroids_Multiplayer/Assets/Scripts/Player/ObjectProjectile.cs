@@ -19,14 +19,13 @@ public class ObjectProjectile : ObjectProperties
     {
         if (col.gameObject.layer != LayerMask.NameToLayer("Obstacle")) return;
 
-        if (IsHost)
-            DespawnObject();
+        LocalDespawn();
     }
 
     private void FixedUpdate()
     {
         if (WorldSizeController.IsObjectOutsideWorldDimensions(transform.position))
-            DespawnObject();
+            LocalDespawn();
     }
 
     public void Launch(Quaternion _rotation, ulong _playerID, float _damage)
@@ -35,5 +34,13 @@ public class ObjectProjectile : ObjectProperties
         playerID = _playerID;
         rb.velocity = (_rotation * Vector2.up * moveSpeed);
         Instantiate(shootEffect, transform.position, _rotation).GetComponent<NetworkObject>().Spawn();
+    }
+
+    public void LocalLaunch(Quaternion _rotation, ulong _playerID, float _damage)
+    {
+        damage = _damage;
+        playerID = _playerID;
+        rb.velocity = (_rotation * Vector2.up * moveSpeed);
+        Instantiate(shootEffect, transform.position, _rotation);
     }
 }

@@ -4,14 +4,18 @@ using Random = UnityEngine.Random;
 public class ObjectObstacle : ObjectProperties
 {
     public Vector3 moveDir;
-    [SerializeField] private float health;
-    [SerializeField] private int points;
+    [SerializeField] private int minPoints;
+    [SerializeField] private int maxPoints;
+    [SerializeField] private int minHealth;
+    [SerializeField] private int maxHealth;
 
     [Header("Move speed will be divided by and multiplied with this value")] [SerializeField]
     private float moveSpeedModifier;
 
     [SerializeField] private float moveDirOffSet;
 
+    private float health;
+    private int points;
     private float minMoveSpeed;
     private float maxMoveSpeed;
 
@@ -32,6 +36,8 @@ public class ObjectObstacle : ObjectProperties
         minMoveSpeed = moveSpeed / moveSpeedModifier;
         maxMoveSpeed = moveSpeed * moveSpeedModifier;
         moveSpeed = Random.Range(minMoveSpeed, maxMoveSpeed);
+        points = GeneratePoints();
+        health = GenerateHealth();
     }
 
     private void FixedUpdate()
@@ -63,7 +69,8 @@ public class ObjectObstacle : ObjectProperties
         if (!(health <= 0)) return;
 
         PlayerDataManager.instance.ChangePointsServerRpc(_playerId, points);
-        DespawnObject();
+        if (IsHost)
+            DespawnObject();
     }
 
     private Vector3 GenerateMoveDir()
@@ -79,5 +86,15 @@ public class ObjectObstacle : ObjectProperties
         moveDir.Normalize();
 
         return moveDir;
+    }
+
+    private int GeneratePoints()
+    {
+        return Random.Range(minPoints, maxPoints + 1);
+    }
+
+    private int GenerateHealth()
+    {
+        return Random.Range(minHealth, maxHealth + 1);
     }
 }

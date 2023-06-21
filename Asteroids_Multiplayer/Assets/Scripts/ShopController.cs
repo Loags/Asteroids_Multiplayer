@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using TMPro;
@@ -36,10 +37,16 @@ public class ShopController : MonoBehaviour
     private PlayerController playerController;
     private GameObject workAroundGameObject;
 
-    private void Start()
+    private void Awake()
     {
         if (instance == null)
             instance = this;
+        InitializeShop();
+    }
+
+    private IEnumerator Start()
+    {
+        yield return new WaitForSeconds(0.5f);
 
         List<PlayerController> tempControllers = FindObjectsOfType<PlayerController>().ToList();
         foreach (var tempPlayerController in tempControllers)
@@ -47,10 +54,6 @@ public class ShopController : MonoBehaviour
             if (tempPlayerController.playerID != NetworkManager.Singleton.LocalClientId) continue;
             playerController = tempPlayerController;
         }
-
-        Debug.Log(playerController);
-
-        InitializeShop();
     }
 
     private void InitializeShop()
@@ -109,10 +112,15 @@ public class ShopController : MonoBehaviour
         PlayerDataManager.instance.ChangePointsServerRpc(NetworkManager.Singleton.LocalClientId, -_item.currentPrice);
 
         // Increase price for next buy
-        _item.currentPrice *= (int)(1 + _item.increasePriceByPercent);
+        foreach (var shopItem in shopItems)
+        {
+            if (shopItem.itemTyp != _item.itemTyp) continue;
+            int newPrice = (int)(shopItem.currentPrice * (1 + _item.increasePriceByPercent));
+            shopItem.currentPrice = newPrice;
+        }
+
         UpdateSlots();
     }
-
 
     private int GetCurrentPoints()
     {

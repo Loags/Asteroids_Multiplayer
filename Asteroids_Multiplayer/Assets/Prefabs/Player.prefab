@@ -144,7 +144,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0cdb8d89bfa02384e9e1b954bbc02873, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  projectilePrefab: {fileID: 9199126829890997151, guid: 90b75cf4014ac114492e635febd9e590, type: 3}
+  projectilePrefab: {fileID: 9199126829890997151, guid: ba9379c877d8044448f2395fb910d247, type: 3}
   projectileSpawnPoint: {fileID: 4361680957287914058}
   projectileEffectSpawnPoint: {fileID: 2649161415508742888}
   shootingCooldown: 0.25

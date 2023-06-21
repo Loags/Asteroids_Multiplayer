@@ -91,10 +91,12 @@ MonoBehaviour:
   moveSpeed: 1
   typ: 0
   moveDir: {x: 0, y: 0, z: 0}
-  health: 10
-  points: 0
+  minPoints: 10
+  maxPoints: 30
+  minHealth: 10
+  maxHealth: 30
   moveSpeedModifier: 1.35
-  moveDirOffSet: 0.7
+  moveDirOffSet: 0.5
 --- !u!114 &1374300329031045735
 MonoBehaviour:
   m_ObjectHideFlags: 0
