@@ -6,7 +6,8 @@ using UnityEngine;
 
 public class PlayerHealthController : NetworkBehaviour
 {
-    [SerializeField] private int playerHealth;
+    [SerializeField] private int playerMaxHealth;
+    [SerializeField] private int playerCurrentHealth;
     [SerializeField] private float invincibilityTime;
     [SerializeField] private bool invincible;
     private ObjectBlink blinkEffect;
@@ -26,9 +27,9 @@ public class PlayerHealthController : NetworkBehaviour
             return;
         }
 
-        playerHealth--;
+        playerCurrentHealth--;
 
-        if (playerHealth <= 0)
+        if (playerCurrentHealth <= 0)
         {
             Die();
         }
@@ -74,5 +75,19 @@ public class PlayerHealthController : NetworkBehaviour
         {
             blinkEffect.StopBlinking();
         }
+    }
+
+    public void IncreaseMaxHealth()
+    {
+        playerMaxHealth += 1;
+    }
+
+    public bool IncreaseCurrentHealth()
+    {
+        if (playerCurrentHealth >= playerMaxHealth)
+            return false;
+
+        playerCurrentHealth += 1;
+        return true;
     }
 }

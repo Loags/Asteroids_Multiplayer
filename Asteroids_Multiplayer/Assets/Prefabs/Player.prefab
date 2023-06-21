@@ -128,6 +128,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8cc2a68d54839b443839cbba4d613508, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  movementController: {fileID: 0}
+  shootingController: {fileID: 0}
+  playerHealthController: {fileID: 0}
   playerID: 0
 --- !u!114 &8138618139727698556
 MonoBehaviour:
@@ -145,6 +148,7 @@ MonoBehaviour:
   projectileSpawnPoint: {fileID: 4361680957287914058}
   projectileEffectSpawnPoint: {fileID: 2649161415508742888}
   shootingCooldown: 0.25
+  damage: 5
 --- !u!114 &8140599985398114712
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -260,7 +264,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cd40427ba440ff045bd5a6760e5d1e4e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerHealth: 5
+  playerMaxHealth: 3
+  playerCurrentHealth: 3
   invincibilityTime: 2
   invincible: 0
 --- !u!114 &8018598299759558713
@@ -275,8 +280,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a8544d9ce3d57e240a4c25a73425ac99, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  blinkInterval: 0.5
-  objectRenderer: {fileID: 0}
 --- !u!1 &2251850855817409635
 GameObject:
   m_ObjectHideFlags: 0

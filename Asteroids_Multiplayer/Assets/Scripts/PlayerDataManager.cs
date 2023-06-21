@@ -48,6 +48,7 @@ public class PlayerDataManager : NetworkBehaviour
     /// </summary>
     public NetworkList<PlayerData> playerDatas;
 
+
     private void Awake()
     {
         if (instance == null)
@@ -140,6 +141,7 @@ public class PlayerDataManager : NetworkBehaviour
     [ServerRpc(RequireOwnership = false)]
     public void ChangePointsServerRpc(ulong _id, int _amount)
     {
+        Debug.Log("ChangePointsServerRpc");
         if (!IsHost) return;
 
         for (int i = 0; i < playerDatas.Count; i++)

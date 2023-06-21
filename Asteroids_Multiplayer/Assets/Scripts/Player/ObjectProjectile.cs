@@ -29,8 +29,9 @@ public class ObjectProjectile : ObjectProperties
             DespawnObject();
     }
 
-    public void Launch(Quaternion _rotation, ulong _playerID)
+    public void Launch(Quaternion _rotation, ulong _playerID, float _damage)
     {
+        damage = _damage;
         playerID = _playerID;
         rb.velocity = (_rotation * Vector2.up * moveSpeed);
         Instantiate(shootEffect, transform.position, _rotation).GetComponent<NetworkObject>().Spawn();

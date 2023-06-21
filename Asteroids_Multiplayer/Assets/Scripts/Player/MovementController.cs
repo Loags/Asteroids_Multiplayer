@@ -43,4 +43,7 @@ public class MovementController : MonoBehaviour
                 Quaternion.RotateTowards(transform.rotation, targetRotation, Time.deltaTime * rotationSpeed);
         }
     }
+
+    public void IncreaseRotationSpeed(float _value) => rotationSpeed += _value;
+    public void IncreaseMoveSpeed(float _value) => moveSpeed += _value;
 }

@@ -3,9 +3,10 @@ using UnityEngine;
 
 public class PlayerController : NetworkBehaviour
 {
-    private MovementController movementController;
-    private ShootingController shootingController;
+    public MovementController movementController;
+    public ShootingController shootingController;
     private CameraController cameraController;
+    public PlayerHealthController playerHealthController;
     private GameObject camera;
     public ulong playerID;
 
@@ -14,6 +15,7 @@ public class PlayerController : NetworkBehaviour
     {
         movementController = GetComponent<MovementController>();
         shootingController = GetComponent<ShootingController>();
+        playerHealthController = GetComponent<PlayerHealthController>();
         camera = transform.GetChild(2).gameObject;
     }
 
@@ -35,5 +37,8 @@ public class PlayerController : NetworkBehaviour
         shootingController.HandleShootingInput();
         if (camera.activeSelf && cameraController != null)
             cameraController.HandleCameraMovement();
+
+        if (Input.GetKeyDown(KeyCode.B))
+            ShopController.instance.ToggleShop();
     }
 }
