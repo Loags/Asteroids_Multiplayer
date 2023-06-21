@@ -79,14 +79,7 @@ public class ShopController : MonoBehaviour
 
     public void BuyItem(ShopItem _item)
     {
-        if (GetCurrentPoints() < _item.currentPrice)
-        {
-            Debug.Log("Too less points");
-            return;
-        }
-
-        Debug.Log("Enough Points");
-        Debug.Log("CurrentPoints: " + GetCurrentPoints() + "   needed: " + _item.currentPrice);
+        if (GetCurrentPoints() < _item.currentPrice) return;
 
         switch (_item.itemTyp)
         {
@@ -130,7 +123,6 @@ public class ShopController : MonoBehaviour
             currentPoints = playerData.Points;
         }
 
-        Debug.Log("Current Points: " + currentPoints);
         return currentPoints;
     }
 
