@@ -4888,7 +4888,7 @@ GameObject:
   - component: {fileID: 19800002}
   - component: {fileID: 19900002}
   - component: {fileID: 11400000}
-  - component: {fileID: 6481278463415439826}
+  - component: {fileID: 8574270084035711962}
   m_Layer: 0
   m_Name: Muzzle Flash
   m_TagString: Untagged
@@ -9713,7 +9713,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 75795b269014860408c543a40cba331d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &6481278463415439826
+--- !u!114 &8574270084035711962
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

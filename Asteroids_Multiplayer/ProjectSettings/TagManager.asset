@@ -8,6 +8,7 @@ TagManager:
   - Projectile
   - RankingSlotHolder
   - ShopSlotHolder
+  - HealthContainer
   layers:
   - Default
   - TransparentFX

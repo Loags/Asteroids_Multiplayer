@@ -1,3 +1,5 @@
+using Unity.Mathematics;
+using Unity.Netcode;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -13,6 +15,7 @@ public class ObjectObstacle : ObjectProperties
     private float moveSpeedModifier;
 
     [SerializeField] private float moveDirOffSet;
+    [SerializeField] private GameObject hitEffect;
 
     private float health;
     private int points;
@@ -54,6 +57,7 @@ public class ObjectObstacle : ObjectProperties
         if (col.gameObject.layer == LayerMask.NameToLayer("Projectile"))
         {
             ObjectProjectile objectProjectile = col.GetComponent<ObjectProjectile>();
+            ExplosionServerRpc(objectProjectile.transform.position);
             TakeDamage(objectProjectile.playerID, objectProjectile.GetDamage);
         }
 
@@ -96,5 +100,17 @@ public class ObjectObstacle : ObjectProperties
     private int GenerateHealth()
     {
         return Random.Range(minHealth, maxHealth + 1);
+    }
+
+    [ServerRpc(RequireOwnership = false)]
+    private void ExplosionServerRpc(Vector2 _position)
+    {
+        ExplosionClientRpc(_position);
+    }
+
+    [ClientRpc]
+    private void ExplosionClientRpc(Vector2 _position)
+    {
+        Instantiate(hitEffect, _position, quaternion.identity);
     }
 }

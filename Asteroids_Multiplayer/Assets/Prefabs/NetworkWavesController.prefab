@@ -45,7 +45,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c03958c4c7d6d9f40bb15fcba52bd8ab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spawnIntervall: 3
+  spawnIntervall: 1.75
   maxAmountObstacles: 20
 --- !u!114 &3297686632569521916
 MonoBehaviour:

@@ -48,12 +48,7 @@ public class ShopController : MonoBehaviour
     {
         yield return new WaitForSeconds(0.5f);
 
-        List<PlayerController> tempControllers = FindObjectsOfType<PlayerController>().ToList();
-        foreach (var tempPlayerController in tempControllers)
-        {
-            if (tempPlayerController.playerID != NetworkManager.Singleton.LocalClientId) continue;
-            playerController = tempPlayerController;
-        }
+        playerController = GetterPlayerController.GetPlayerControllerWithID(NetworkManager.Singleton.LocalClientId);
     }
 
     private void InitializeShop()
@@ -110,6 +105,7 @@ public class ShopController : MonoBehaviour
         }
 
         PlayerDataManager.instance.ChangePointsServerRpc(NetworkManager.Singleton.LocalClientId, -_item.currentPrice);
+        PlayerDataManager.instance.ChangeLevelServerRpc(NetworkManager.Singleton.LocalClientId);
 
         // Increase price for next buy
         foreach (var shopItem in shopItems)

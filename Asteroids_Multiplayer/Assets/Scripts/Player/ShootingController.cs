@@ -13,8 +13,14 @@ public class ShootingController : NetworkBehaviour
         playerController = GetComponent<PlayerController>();
     }
 
-    public void HandleShootingInput()
+    public void HandleShootingInput(bool _blockInput = false)
     {
+        if (_blockInput)
+        {
+            CancelInvoke(nameof(LocalShootServerRpc));
+            return;
+        }
+
         if (Input.GetKeyDown(KeyCode.Space))
             InvokeRepeating(nameof(LocalShootServerRpc), 0f, shootingCooldown);
         else if (Input.GetKeyUp(KeyCode.Space))
@@ -43,7 +49,14 @@ public class ShootingController : NetworkBehaviour
         GameObject spawnedProjectile = ObjectPool.instance.GetObjectFromPool();
         spawnedProjectile.transform.position = projectileSpawnPoint.position;
         spawnedProjectile.transform.rotation = transform.rotation;
+
         ObjectProjectile objectProjectile = spawnedProjectile.GetComponent<ObjectProjectile>();
-        objectProjectile.LocalLaunch(transform.rotation, playerController.playerID, damage);
+        if (PlayerDataManager.instance.damageMultiplierActive)
+        {
+            int modifiedDamage = (int)(damage * PlayerDataManager.instance.damageMultiplier);
+            objectProjectile.LocalLaunch(transform.rotation, playerController.playerID, modifiedDamage);
+        }
+        else
+            objectProjectile.LocalLaunch(transform.rotation, playerController.playerID, damage);
     }
 }

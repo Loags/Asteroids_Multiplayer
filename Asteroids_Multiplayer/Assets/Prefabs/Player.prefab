@@ -132,6 +132,7 @@ MonoBehaviour:
   shootingController: {fileID: 0}
   playerHealthController: {fileID: 0}
   playerID: 0
+  blockInput: 0
 --- !u!114 &8138618139727698556
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -144,9 +145,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0cdb8d89bfa02384e9e1b954bbc02873, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  projectilePrefab: {fileID: 9199126829890997151, guid: ba9379c877d8044448f2395fb910d247, type: 3}
   projectileSpawnPoint: {fileID: 4361680957287914058}
-  projectileEffectSpawnPoint: {fileID: 2649161415508742888}
   shootingCooldown: 0.25
   damage: 5
 --- !u!114 &8140599985398114712
@@ -267,6 +266,7 @@ MonoBehaviour:
   playerMaxHealth: 3
   playerCurrentHealth: 3
   invincibilityTime: 2
+  deathTime: 5
   invincible: 0
 --- !u!114 &8018598299759558713
 MonoBehaviour:

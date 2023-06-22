@@ -10,6 +10,7 @@ public class PlayerController : NetworkBehaviour
     private GameObject camera;
     public ulong playerID;
 
+    public bool blockInput = false;
 
     private void Awake()
     {
@@ -33,8 +34,11 @@ public class PlayerController : NetworkBehaviour
     {
         if (!GetComponent<NetworkObject>().IsOwner) return;
 
-        movementController.HandleMovementInput();
-        shootingController.HandleShootingInput();
+        movementController.HandleMovementInput(blockInput);
+        shootingController.HandleShootingInput(blockInput);
+
+        if (blockInput) return;
+
         if (camera.activeSelf && cameraController != null)
             cameraController.HandleCameraMovement();
 

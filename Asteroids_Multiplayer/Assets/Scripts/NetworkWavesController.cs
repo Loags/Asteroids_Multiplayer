@@ -38,6 +38,8 @@ public class NetworkWavesController : NetworkBehaviour
                 break;
             case ObjectTyp.Projectile:
                 break;
+            case ObjectTyp.PickUp:
+                break;
             default:
                 throw new ArgumentOutOfRangeException(nameof(_typ), _typ, null);
         }

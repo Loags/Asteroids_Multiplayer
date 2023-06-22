@@ -12,8 +12,14 @@ public class MovementController : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
     }
 
-    public void HandleMovementInput()
+    public void HandleMovementInput(bool _blockInput = false)
     {
+        if (_blockInput)
+        {
+            rb.velocity = Vector2.zero;
+            return;
+        }
+
         float moveHorizontal = Input.GetAxis("Horizontal");
         float moveVertical = Input.GetAxis("Vertical");
 

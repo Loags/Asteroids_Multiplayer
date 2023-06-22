@@ -4,7 +4,8 @@ using UnityEngine;
 public enum ObjectTyp
 {
     Obstacle,
-    Projectile
+    Projectile,
+    PickUp
 }
 
 public class ObjectProperties : NetworkBehaviour
@@ -12,10 +13,6 @@ public class ObjectProperties : NetworkBehaviour
     public Rigidbody2D rb;
     public float moveSpeed;
     public ObjectTyp typ;
-
-    private Coroutine lifeCoroutine;
-
-
     public delegate void OnObjectDespawn(ObjectTyp _typ);
 
     public event OnObjectDespawn ObjectDespawn;

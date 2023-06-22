@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using Unity.Netcode;
 using UnityEngine;
 
@@ -47,6 +48,14 @@ public class PlayerDataManager : NetworkBehaviour
     /// <param name="playerDatas"></param> Stores the data of each client that is connected
     /// </summary>
     public NetworkList<PlayerData> playerDatas;
+
+    private bool pointsMultiplierActive;
+    private float pointsMultiplier;
+    private Coroutine pointsMultiplierCoroutine;
+
+    [HideInInspector] public bool damageMultiplierActive;
+    [HideInInspector] public float damageMultiplier;
+    private Coroutine damageMultiplierCoroutine;
 
 
     private void Awake()
@@ -148,7 +157,30 @@ public class PlayerDataManager : NetworkBehaviour
             if (playerDatas[i].ID != _id) continue;
 
             PlayerData updatedPlayerData = playerDatas[i];
-            updatedPlayerData.Points += _amount;
+            if (pointsMultiplierActive)
+            {
+                int modifiedAmount = (int)(_amount * pointsMultiplier);
+                updatedPlayerData.Points += modifiedAmount;
+            }
+            else
+                updatedPlayerData.Points += _amount;
+
+            playerDatas[i] = updatedPlayerData;
+            break;
+        }
+    }
+
+    [ServerRpc(RequireOwnership = false)]
+    public void ChangeLevelServerRpc(ulong _id)
+    {
+        if (!IsHost) return;
+
+        for (int i = 0; i < playerDatas.Count; i++)
+        {
+            if (playerDatas[i].ID != _id) continue;
+
+            PlayerData updatedPlayerData = playerDatas[i];
+            updatedPlayerData.Level += 1;
             playerDatas[i] = updatedPlayerData;
             break;
         }
@@ -171,5 +203,53 @@ public class PlayerDataManager : NetworkBehaviour
             playerDatas.RemoveAt(i);
             break;
         }
+    }
+
+    public void TogglePointsMultiplier(float _duration, float _multiplier)
+    {
+        if (pointsMultiplier < _multiplier)
+        {
+            if (pointsMultiplierCoroutine != null)
+                StopCoroutine(pointsMultiplierCoroutine);
+            pointsMultiplierCoroutine = StartCoroutine(PointsMultiplierCoroutine(_duration));
+            pointsMultiplier = _multiplier;
+        }
+
+        if (pointsMultiplierCoroutine != null) return;
+
+        pointsMultiplier = _multiplier;
+        pointsMultiplierCoroutine = StartCoroutine(PointsMultiplierCoroutine(_duration));
+    }
+
+    private IEnumerator PointsMultiplierCoroutine(float _duration)
+    {
+        pointsMultiplierActive = true;
+        yield return new WaitForSeconds(_duration);
+        pointsMultiplierActive = false;
+        pointsMultiplierCoroutine = null;
+    }
+
+    public void ToggleDamageMultiplier(float _duration, float _multiplier)
+    {
+        if (damageMultiplier < _multiplier)
+        {
+            if (damageMultiplierCoroutine != null)
+                StopCoroutine(damageMultiplierCoroutine);
+            damageMultiplierCoroutine = StartCoroutine(DamageMultiplierCoroutine(_duration));
+            damageMultiplier = _multiplier;
+        }
+
+        if (damageMultiplierCoroutine != null) return;
+
+        damageMultiplier = _multiplier;
+        damageMultiplierCoroutine = StartCoroutine(DamageMultiplierCoroutine(_duration));
+    }
+
+    private IEnumerator DamageMultiplierCoroutine(float _duration)
+    {
+        damageMultiplierActive = true;
+        yield return new WaitForSeconds(_duration);
+        damageMultiplierActive = false;
+        damageMultiplierCoroutine = null;
     }
 }
