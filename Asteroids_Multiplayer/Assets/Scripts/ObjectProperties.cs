@@ -13,7 +13,8 @@ public class ObjectProperties : NetworkBehaviour
     public Rigidbody2D rb;
     public float moveSpeed;
     public ObjectTyp typ;
-    public delegate void OnObjectDespawn(ObjectTyp _typ);
+
+    public delegate void OnObjectDespawn(ObjectTyp _typ, bool _increase);
 
     public event OnObjectDespawn ObjectDespawn;
 
@@ -25,7 +26,7 @@ public class ObjectProperties : NetworkBehaviour
 
     public void OnDespawn()
     {
-        ObjectDespawn?.Invoke(typ);
+        ObjectDespawn?.Invoke(typ, false);
     }
 
     protected void DespawnObject() => NetworkObjectSpawner.Singleton.InstantDespawn(

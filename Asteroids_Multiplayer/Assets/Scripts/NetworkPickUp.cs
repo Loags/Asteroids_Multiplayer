@@ -28,11 +28,9 @@ public class NetworkPickUp : ObjectProperties
 
     protected virtual void ApplyEffect()
     {
-        Debug.Log("PickUp: " + pickUpTyp);
-        if (IsHost)
-        {
-            NetworkPickUpController.Singleton.activePickups -= 1;
-            DespawnObject();
-        }
+        if (!IsHost) return;
+
+        NetworkPickUpController.Singleton.activePickups -= 1;
+        DespawnObject();
     }
 }

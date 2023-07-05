@@ -10,7 +10,7 @@ public class PlayerController : NetworkBehaviour
     private GameObject camera;
     public ulong playerID;
 
-    public bool blockInput = false;
+    public bool blockInput;
 
     private void Awake()
     {
@@ -22,7 +22,6 @@ public class PlayerController : NetworkBehaviour
 
     public override void OnNetworkSpawn()
     {
-        Debug.Log("Player ID: " + gameObject.GetComponent<NetworkObject>().OwnerClientId);
         playerID = gameObject.GetComponent<NetworkObject>().OwnerClientId;
 
         if (!GetComponent<NetworkObject>().IsOwner) return;

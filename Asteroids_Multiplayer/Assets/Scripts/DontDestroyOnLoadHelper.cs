@@ -1,4 +1,3 @@
-using System;
 using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -14,7 +13,7 @@ public class DontDestroyOnLoadHelper : MonoBehaviour
     private void OnSceneLoaded(Scene arg0, LoadSceneMode arg1)
     {
         if (!NetworkManager.Singleton.IsHost) return;
-        if (SceneManager.GetActiveScene().name == "Game" || SceneManager.GetActiveScene().name == "MainMenu")
+        if (SceneManager.GetActiveScene().name is "Game" or "MainMenu")
             transform.GetChild(0).gameObject.SetActive(false);
         else if (SceneManager.GetActiveScene().name == "Lobby")
             transform.GetChild(0).gameObject.SetActive(true);

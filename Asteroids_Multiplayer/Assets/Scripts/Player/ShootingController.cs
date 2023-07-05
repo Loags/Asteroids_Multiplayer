@@ -33,16 +33,10 @@ public class ShootingController : NetworkBehaviour
 
 
     [ServerRpc(RequireOwnership = false)]
-    private void LocalShootServerRpc()
-    {
-        LocalShootClientRpc();
-    }
+    private void LocalShootServerRpc() => LocalShootClientRpc();
 
     [ClientRpc]
-    private void LocalShootClientRpc()
-    {
-        LocalShoot();
-    }
+    private void LocalShootClientRpc() => LocalShoot();
 
     private void LocalShoot()
     {
@@ -51,6 +45,7 @@ public class ShootingController : NetworkBehaviour
         spawnedProjectile.transform.rotation = transform.rotation;
 
         ObjectProjectile objectProjectile = spawnedProjectile.GetComponent<ObjectProjectile>();
+
         if (PlayerDataManager.instance.damageMultiplierActive)
         {
             int modifiedDamage = (int)(damage * PlayerDataManager.instance.damageMultiplier);

@@ -4,8 +4,7 @@ using System.Linq;
 using UnityEngine;
 using Unity.Netcode;
 using UnityEngine.SceneManagement;
-using UnityEngine.UIElements;
-using Button = UnityEngine.UI.Button;
+using UnityEngine.UI;
 
 public class LobbyManager : NetworkBehaviour
 {
@@ -14,10 +13,7 @@ public class LobbyManager : NetworkBehaviour
 
     [SerializeField] private GameObject lobbySlotPrefab;
     [SerializeField] private Transform prefabTarget;
-    [SerializeField] private Button readyButton;
     [SerializeField] private Button startGameButton;
-    [SerializeField] private ScrollView lobbyScrollView;
-
 
     private NetworkManager networkManager;
 
@@ -40,9 +36,7 @@ public class LobbyManager : NetworkBehaviour
     {
         yield return new WaitForSeconds(0.5f);
         foreach (var playerData in PlayerDataManager.instance.playerDatas)
-        {
             AddLobbySlotServerRpc();
-        }
     }
 
     private void OnEnable()
@@ -54,9 +48,6 @@ public class LobbyManager : NetworkBehaviour
 
     private void Start()
     {
-        //if (IsHost)
-        //AddPlayerToLobbyServerRpc(NetworkManager.Singleton.LocalClientId);
-
         if (!IsHost)
             startGameButton.gameObject.SetActive(false);
     }
@@ -68,13 +59,8 @@ public class LobbyManager : NetworkBehaviour
         networkManager.OnServerStopped -= LeaveServer;
     }
 
-    /// <summary>
-    /// Being called on client and host
-    /// </summary>
-    /// <param name="clientId"></param>
     private void OnClientConnect(ulong _clientId)
     {
-        Debug.Log("Client connected to the lobby");
         PlayerDataManager.instance.AddNewPlayerDataServerRpc(networkManager.LocalClientId, false);
 
         if (IsHost)
@@ -83,8 +69,6 @@ public class LobbyManager : NetworkBehaviour
 
     private void OnClientDisconnected(ulong _clientId)
     {
-        Debug.Log("Client disconnected from the lobby");
-
         RemovePlayerFromLobbyClientRpc();
     }
 
@@ -97,26 +81,24 @@ public class LobbyManager : NetworkBehaviour
     public void AddLobbySlotServerRpc()
     {
         GameObject spawnedPrefab = Instantiate(lobbySlotPrefab);
-
         spawnedPrefab.GetComponent<NetworkObject>().Spawn();
-        // Has to be spawned over the network first before re-parenting it
         spawnedPrefab.transform.SetParent(prefabTarget);
-        //spawnedPrefab.GetComponent<AnchorSetter>().SetAnchorTopStretch();
+
         UpdateLobbySlotListClientRpc();
     }
 
     [ClientRpc]
-    private void UpdateLobbySlotListClientRpc()
-    {
-        lobbySlots = FindObjectsOfType<LobbySlot>().ToList();
-    }
+    private void UpdateLobbySlotListClientRpc() => lobbySlots = FindObjectsOfType<LobbySlot>().ToList();
 
     private void UpdateSlots()
     {
         int reverseIndex = lobbySlots.Count - 1;
-        
+
         foreach (var lobbySlot in lobbySlots)
         {
+            if (PlayerDataManager.instance == null || PlayerDataManager.instance.playerDatas == null ||
+                reverseIndex >= PlayerDataManager.instance.playerDatas.Count) continue;
+            
             PlayerDataManager.PlayerData currentPlayerData = PlayerDataManager.instance.playerDatas[reverseIndex];
             lobbySlot.UpdateSlotWithPlayerData(currentPlayerData.ID, currentPlayerData.IsReady);
             reverseIndex -= 1;
@@ -131,19 +113,9 @@ public class LobbyManager : NetworkBehaviour
         UpdateLobbySlotListClientRpc();
     }
 
+    public void StartGame() => NetworkManager.Singleton.SceneManager.LoadScene("Game", LoadSceneMode.Single);
 
-    /// <summary>
-    /// Can only be called from Host
-    /// </summary>
-    public void StartGame()
-    {
-        NetworkManager.Singleton.SceneManager.LoadScene("Game", LoadSceneMode.Single);
-    }
-
-    public void ReadyButton()
-    {
-        ToggleReadyServerRpc(networkManager.LocalClientId);
-    }
+    public void ReadyButton() => ToggleReadyServerRpc(networkManager.LocalClientId);
 
     [ServerRpc(RequireOwnership = false)]
     private void ToggleReadyServerRpc(ulong _clientId)
@@ -178,6 +150,8 @@ public class LobbyManager : NetworkBehaviour
 
     public void LeaveLobby()
     {
+        if (!IsHost)
+            SceneManager.LoadScene("MainMenu");
         networkManager.Shutdown();
         DontDestroyOnLoadController.DestroyAll();
     }

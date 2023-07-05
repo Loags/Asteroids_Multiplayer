@@ -83,7 +83,6 @@ public class ObjectObstacle : ObjectProperties
 
         targetDirection.Normalize();
 
-        // Add random offset to the move direction
         Vector3 randomOffset = Random.insideUnitCircle * moveDirOffSet;
         Vector3 moveDir = targetDirection + randomOffset;
 
@@ -103,14 +102,8 @@ public class ObjectObstacle : ObjectProperties
     }
 
     [ServerRpc(RequireOwnership = false)]
-    private void ExplosionServerRpc(Vector2 _position)
-    {
-        ExplosionClientRpc(_position);
-    }
+    private void ExplosionServerRpc(Vector2 _position) => ExplosionClientRpc(_position);
 
     [ClientRpc]
-    private void ExplosionClientRpc(Vector2 _position)
-    {
-        Instantiate(hitEffect, _position, quaternion.identity);
-    }
+    private void ExplosionClientRpc(Vector2 _position) => Instantiate(hitEffect, _position, quaternion.identity);
 }

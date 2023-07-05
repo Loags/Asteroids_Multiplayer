@@ -1,8 +1,5 @@
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using Photon.Realtime;
-using Unity.Netcode;
 using UnityEngine;
 
 public static class GetterPlayerController

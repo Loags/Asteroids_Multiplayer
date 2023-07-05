@@ -1,7 +1,5 @@
 using System;
-using System.Collections.Generic;
 using Netcode.Transports.PhotonRealtime;
-using Photon.Realtime;
 using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -35,7 +33,6 @@ public class GameNetworkManager : MonoBehaviour
         photon.RoomName = s;
         joinCode.text = "Room Code\n" + s;
         joinCode.transform.parent.gameObject.SetActive(true);
-        print(s);
 
         NetworkManager.Singleton.StartHost();
         NetworkManager.Singleton.SceneManager.LoadScene("Lobby", LoadSceneMode.Single);
@@ -43,8 +40,8 @@ public class GameNetworkManager : MonoBehaviour
 
     public void JoinGame()
     {
-        if (connectionCode != null)
-            connectionCode.ToLower();
+        connectionCode?.ToLower();
+
         if (connectionCode == null || connectionCode.Length != 5)
         {
             WrongCode();
@@ -55,19 +52,10 @@ public class GameNetworkManager : MonoBehaviour
         NetworkManager.Singleton.StartClient();
     }
 
-    public void UpdateConnectionCode(string _code)
-    {
-        connectionCode = _code;
-    }
+    public void UpdateConnectionCode(string _code) => connectionCode = _code;
 
 
-    private void WrongCode()
-    {
-        inputField.GetComponent<Image>().color = Color.red;
-    }
+    private void WrongCode() => inputField.GetComponent<Image>().color = Color.red;
 
-    public void ResetInputField()
-    {
-        inputField.GetComponent<Image>().color = new Color(100, 100, 100);
-    }
+    public void ResetInputField() => inputField.GetComponent<Image>().color = new Color(100, 100, 100);
 }

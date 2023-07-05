@@ -9,8 +9,7 @@ public class NetworkWavesController : NetworkBehaviour
 
     [SerializeField] private float spawnIntervall;
     [SerializeField] private int maxAmountObstacles;
-    private NetworkVariable<int> amountAlive = new NetworkVariable<int>();
-    private Coroutine spawnCoroutine;
+    private NetworkVariable<int> amountAlive = new();
 
     public void Awake()
     {
@@ -29,51 +28,30 @@ public class NetworkWavesController : NetworkBehaviour
         NetworkObjectPool.InstatiatePoolDone += StartSpawningWithCoroutine;
     }
 
-    public void ObjectStatusTracker(ObjectTyp _typ)
+    public void ObstacleAmountStatusTracker(ObjectTyp _typ, bool _increase)
     {
-        switch (_typ)
-        {
-            case ObjectTyp.Obstacle:
-                amountAlive.Value -= 1;
-                break;
-            case ObjectTyp.Projectile:
-                break;
-            case ObjectTyp.PickUp:
-                break;
-            default:
-                throw new ArgumentOutOfRangeException(nameof(_typ), _typ, null);
-        }
+        if (_typ != ObjectTyp.Obstacle) return;
+
+        if (_increase)
+            amountAlive.Value += 1;
+        else
+            amountAlive.Value -= 1;
     }
 
     [ServerRpc]
     private void SpawnObjectServerRpc()
     {
         NetworkObstacleController.Singleton.SpawnObstacles(1);
-        amountAlive.Value += 1;
     }
 
-    private void StartSpawningWithCoroutine()
-    {
-        spawnCoroutine = StartCoroutine(SpawnObjectsCoroutine());
-    }
-
-    private void StopSpawningWithCoroutine()
-    {
-        if (spawnCoroutine != null)
-        {
-            StopCoroutine(spawnCoroutine);
-            spawnCoroutine = null;
-        }
-    }
+    private void StartSpawningWithCoroutine() => StartCoroutine(SpawnObjectsCoroutine());
 
     private IEnumerator SpawnObjectsCoroutine()
     {
         while (true)
         {
             if (amountAlive.Value < maxAmountObstacles)
-            {
                 SpawnObjectServerRpc();
-            }
 
             yield return new WaitForSeconds(spawnIntervall);
         }

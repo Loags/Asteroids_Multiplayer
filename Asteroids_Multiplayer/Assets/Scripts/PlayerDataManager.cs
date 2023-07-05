@@ -75,6 +75,7 @@ public class PlayerDataManager : NetworkBehaviour
         AddNewPlayerDataServerRpc(NetworkManager.Singleton.LocalClientId, false);
     }
 
+
     [ServerRpc(RequireOwnership = false)]
     public void AddNewPlayerDataServerRpc(ulong _clientId, bool _isReady)
     {
@@ -84,12 +85,10 @@ public class PlayerDataManager : NetworkBehaviour
 
         foreach (var playerData in playerDatas)
         {
-            if (playerData.ID == _clientId)
-            {
-                Debug.LogWarning("Trying to add data with already existing Client id: " + _clientId);
-                playerDataAlreadyExists = true;
-                break;
-            }
+            if (playerData.ID != _clientId) continue;
+
+            playerDataAlreadyExists = true;
+            break;
         }
 
         if (playerDataAlreadyExists) return;
@@ -104,7 +103,6 @@ public class PlayerDataManager : NetworkBehaviour
     /// <exception cref="NotImplementedException"></exception>
     private void OnPlayerDatasChanged(NetworkListEvent<PlayerData> changeevent)
     {
-        PlayerData modifiedPlayerData = new(changeevent.Value.ID, changeevent.Value.IsReady);
         switch (changeevent.Type)
         {
             case NetworkListEvent<PlayerData>.EventType.Add:
@@ -223,9 +221,12 @@ public class PlayerDataManager : NetworkBehaviour
 
     private IEnumerator PointsMultiplierCoroutine(float _duration)
     {
+        PlayerBuffDisplayController playerBuffDisplayController = FindObjectOfType<PlayerBuffDisplayController>();
+        playerBuffDisplayController.TogglePointsBuff(true, 0);
         pointsMultiplierActive = true;
         yield return new WaitForSeconds(_duration);
         pointsMultiplierActive = false;
+        playerBuffDisplayController.TogglePointsBuff(false, 0);
         pointsMultiplierCoroutine = null;
     }
 
@@ -247,8 +248,11 @@ public class PlayerDataManager : NetworkBehaviour
 
     private IEnumerator DamageMultiplierCoroutine(float _duration)
     {
+        PlayerBuffDisplayController playerBuffDisplayController = FindObjectOfType<PlayerBuffDisplayController>();
+        playerBuffDisplayController.TogglePointsBuff(true, 1);
         damageMultiplierActive = true;
         yield return new WaitForSeconds(_duration);
+        playerBuffDisplayController.TogglePointsBuff(false, 1);
         damageMultiplierActive = false;
         damageMultiplierCoroutine = null;
     }

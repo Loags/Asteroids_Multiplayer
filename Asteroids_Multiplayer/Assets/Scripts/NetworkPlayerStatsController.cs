@@ -22,7 +22,6 @@ public class NetworkPlayerStatsController : NetworkBehaviour
     {
         if (!IsHost) return;
 
-        // Spawn RankingSlots
         InitializeSlotsServerRpc();
     }
 
@@ -35,7 +34,7 @@ public class NetworkPlayerStatsController : NetworkBehaviour
 
             GameObject spawnedPrefab = Instantiate(playerStatsSlotPrefab);
             NetworkPlayerStatsSlot currentPlayerStatsSlot = spawnedPrefab.GetComponent<NetworkPlayerStatsSlot>();
-            currentPlayerStatsSlot.UpdateSlotData(currentPlayerData.ID, currentPlayerData.Points,
+            currentPlayerStatsSlot.UpdateSlotData(currentPlayerData.Points,
                 currentPlayerData.Level,
                 currentPlayerData.Rank);
             slots.Add(currentPlayerStatsSlot);
@@ -64,7 +63,7 @@ public class NetworkPlayerStatsController : NetworkBehaviour
             if (playerData.ID == NetworkManager.Singleton.LocalClientId) continue;
 
             PlayerDataManager.PlayerData currentPlayerData = playerData;
-            slots[index].UpdateSlotData(currentPlayerData.ID, currentPlayerData.Points,
+            slots[index].UpdateSlotData(currentPlayerData.Points,
                 currentPlayerData.Level,
                 currentPlayerData.Rank);
             index += 1;
@@ -80,7 +79,7 @@ public class NetworkPlayerStatsController : NetworkBehaviour
         foreach (var currentPlayerData in sortedDatas)
         {
             if (currentPlayerData.ID != NetworkManager.Singleton.LocalClientId) continue;
-            localSlot.UpdateSlotData(currentPlayerData.ID, currentPlayerData.Points,
+            localSlot.UpdateSlotData(currentPlayerData.Points,
                 currentPlayerData.Level,
                 currentPlayerData.Rank);
             break;
@@ -88,18 +87,13 @@ public class NetworkPlayerStatsController : NetworkBehaviour
     }
 
     [ClientRpc]
-    private void SortPlayerDataByRankingClientRpc()
-    {
-        SortPlayerDataByRanking();
-    }
+    private void SortPlayerDataByRankingClientRpc() => SortPlayerDataByRanking();
 
     public void SortPlayerDataByRanking()
     {
         sortedDatas.Clear();
         foreach (PlayerDataManager.PlayerData playerData in PlayerDataManager.instance.playerDatas)
-        {
             sortedDatas.Add(playerData);
-        }
 
         // Sort descending by points
         sortedDatas.Sort((x, y) => y.Points.CompareTo(x.Points));
@@ -110,13 +104,6 @@ public class NetworkPlayerStatsController : NetworkBehaviour
             PlayerDataManager.PlayerData updatedPlayerData = sortedDatas[i];
             updatedPlayerData.Rank = i + 1;
             sortedDatas[i] = updatedPlayerData;
-        }
-
-        foreach (var playerData in sortedDatas)
-        {
-            Debug.Log("SortPlayerDataByRanking playerData ID: " + playerData.ID + "    level " + playerData.Level +
-                      "    points " +
-                      playerData.Points + "    rank " + playerData.Rank);
         }
 
         UpdateLocalSlot();
