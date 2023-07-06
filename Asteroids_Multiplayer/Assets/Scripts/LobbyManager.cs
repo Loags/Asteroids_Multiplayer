@@ -15,6 +15,9 @@ public class LobbyManager : NetworkBehaviour
     [SerializeField] private Transform prefabTarget;
     [SerializeField] private Button startGameButton;
 
+    [SerializeField] private CanvasGroup shipSelectionCanvasGroup;
+
+
     private NetworkManager networkManager;
 
     private void Awake()
@@ -98,7 +101,7 @@ public class LobbyManager : NetworkBehaviour
         {
             if (PlayerDataManager.instance == null || PlayerDataManager.instance.playerDatas == null ||
                 reverseIndex >= PlayerDataManager.instance.playerDatas.Count) continue;
-            
+
             PlayerDataManager.PlayerData currentPlayerData = PlayerDataManager.instance.playerDatas[reverseIndex];
             lobbySlot.UpdateSlotWithPlayerData(currentPlayerData.ID, currentPlayerData.IsReady);
             reverseIndex -= 1;
@@ -125,7 +128,7 @@ public class LobbyManager : NetworkBehaviour
         foreach (var playerData in PlayerDataManager.instance.playerDatas)
         {
             if (playerData.ID != _clientId) continue;
-            PlayerDataManager.instance.UpdatePlayerData(_clientId, !playerData.IsReady);
+            PlayerDataManager.instance.UpdateReadyPlayerData(_clientId, !playerData.IsReady);
         }
 
         ToggleStartButton();
@@ -154,5 +157,17 @@ public class LobbyManager : NetworkBehaviour
             SceneManager.LoadScene("MainMenu");
         networkManager.Shutdown();
         DontDestroyOnLoadController.DestroyAll();
+    }
+
+    public void OpenShipSelection()
+    {
+        CanvasGroup ownCanvasGroup = GetComponent<CanvasGroup>();
+        ownCanvasGroup.interactable = false;
+        ownCanvasGroup.alpha = 0;
+        ownCanvasGroup.blocksRaycasts = false;
+
+        shipSelectionCanvasGroup.interactable = true;
+        shipSelectionCanvasGroup.alpha = 1;
+        shipSelectionCanvasGroup.blocksRaycasts = true;
     }
 }

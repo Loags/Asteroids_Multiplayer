@@ -29,7 +29,12 @@ public class ShootingController : NetworkBehaviour
 
     public void IncreaseDamage(int _value) => damage += _value;
 
-    public void IncreaseShootingSpeed(float _value) => shootingCooldown -= _value;
+    public void IncreaseShootingSpeed(float _value)
+    {
+        shootingCooldown -= _value;
+        if (shootingCooldown <= 0.05f)
+            shootingCooldown = 0.05f;
+    }
 
 
     [ServerRpc(RequireOwnership = false)]

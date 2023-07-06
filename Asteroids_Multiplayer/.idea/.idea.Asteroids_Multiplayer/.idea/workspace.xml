@@ -1,66 +1,51 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="0713fd8e-2b3b-4abd-81e9-8328f26cb79f" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.Asteroids_Multiplayer/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Asteroids_Multiplayer/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/2D Space Kit/Prefabs/Explosion.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/2D Space Kit/Prefabs/Explosion.prefab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/2D Space Kit/Prefabs/Muzzle Flash.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/2D Space Kit/Prefabs/Muzzle Flash.prefab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/2D Space Kit/Scripts/PSDestroy.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/2D Space Kit/Scripts/PSDestroy.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/DefaultNetworkPrefabs.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/DefaultNetworkPrefabs.asset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/LocalProjectile.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/LocalProjectile.prefab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/NetworkObjectPool.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/NetworkObjectPool.prefab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/NetworkObstacleController.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/NetworkObstacleController.prefab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/NetworkWavesController.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/NetworkWavesController.prefab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/Obstacle_Base.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/Obstacle_Base.prefab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/Player.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/Player.prefab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scenes/Game.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/Game.unity" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scenes/Lobby.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/Lobby.unity" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scenes/MainMenu.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/MainMenu.unity" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/DontDestroyOnLoadHelper.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/DontDestroyOnLoadHelper.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/NetworkObjectSpawner.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/NetworkObjectSpawner.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/NetworkWavesController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/NetworkWavesController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/ObjectBlink.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/ObjectBlink.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/ObjectObstacle.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/ObjectObstacle.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/ObjectProperties.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/ObjectProperties.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Player/MovementController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Player/MovementController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Player/ObjectProjectile.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Player/ObjectProjectile.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Player/PlayerController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Player/PlayerController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Player/ShootingController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Player/ShootingController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/PlayerDataManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/PlayerDataManager.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/PlayerHealthController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/PlayerHealthController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/ShopController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/ShopController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ProjectSettings/TagManager.asset" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectSettings/TagManager.asset" afterDir="false" />
-    </list>
+    <list default="true" id="0713fd8e-2b3b-4abd-81e9-8328f26cb79f" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="HighlightingSettingsPerFile">
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/6e4c76ee1f0f4ba38e5a6d1ce90ed46c47000/67/3db60bc2/INetworkPrefabInstanceHandler.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/95795cd1d46b40db900851cd6e8f0e7947000/55/2ad2a1c3/NetworkListEvent`1.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/f712b1dc50b4468388b9c5f95d0d0eaf159e00/82/137c6cf0/Object.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/f712b1dc50b4468388b9c5f95d0d0eaf159e00/be/bdadf2f3/ObjectPool`1.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/873cb98bd7b6d9e3d289b4092a3736f854992bfff4d3bc2cfe6504213203974/System.Net.Sockets.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/8a522b806eac9bb894e6e4c5fe87f353457535e769447e79c6b396beecb5d0/System.Threading.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/2D Space Kit/Scripts/Projectile.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="mock://E:/Unity Projects/Asteroids_Multiplayer/Asteroids_Multiplayer/Assets/GameNetworkManager.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/GameNetworkManager.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/LobbySlot.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Assets/Scripts/AnchorSetter.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/CameraController.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Assets/Scripts/Client.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="mock://E:/Unity Projects/Asteroids_Multiplayer/Asteroids_Multiplayer/Assets/Scripts/CameraController.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/DontDestroyOnLoadController.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="mock://E:/Unity Projects/Asteroids_Multiplayer/Asteroids_Multiplayer/Assets/Scripts/DontDestroyOnLoadController.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/DontDestroyOnLoadHelper.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="mock://E:/Unity Projects/Asteroids_Multiplayer/Asteroids_Multiplayer/Assets/Scripts/DontDestroyOnLoadHelper.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://E:/Unity Projects/Asteroids_Multiplayer/Asteroids_Multiplayer/Assets/Scripts/GetterPlayerController.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/GetterPlayerController.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="mock://E:/Unity Projects/Asteroids_Multiplayer/Asteroids_Multiplayer/Assets/Scripts/LifeDisplayController.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://E:/Unity Projects/Asteroids_Multiplayer/Asteroids_Multiplayer/Assets/Scripts/LifeDisplayController.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://E:/Unity Projects/Asteroids_Multiplayer/Asteroids_Multiplayer/Assets/Scripts/LifeDisplayController.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/LobbyManager.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="mock://E:/Unity Projects/Asteroids_Multiplayer/Asteroids_Multiplayer/Assets/Scripts/LobbyManager.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://E:/Unity Projects/Asteroids_Multiplayer/Asteroids_Multiplayer/Assets/Scripts/LobbyManager.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://E:/Unity Projects/Asteroids_Multiplayer/Asteroids_Multiplayer/Assets/Scripts/LobbyManager.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/NetworkObjectPool.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="mock://E:/Unity Projects/Asteroids_Multiplayer/Asteroids_Multiplayer/Assets/Scripts/NetworkObjectPool.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/NetworkObjectSpawner.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/NetworkObstacleController.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="mock://E:/Unity Projects/Asteroids_Multiplayer/Asteroids_Multiplayer/Assets/Scripts/NetworkPickUp.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/NetworkPickUp.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/NetworkPickUpController.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/NetworkPlayerStatsController.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/NetworkPlayerStatsSlot.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="mock://E:/Unity Projects/Asteroids_Multiplayer/Asteroids_Multiplayer/Assets/Scripts/NetworkPlayerStatsSlot.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/NetworkWavesController.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/ObjectBlink.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="mock://E:/Unity Projects/Asteroids_Multiplayer/Asteroids_Multiplayer/Assets/Scripts/ObjectObstacle.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/ObjectObstacle.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/ObjectPickUpDamageMultiplier.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/ObjectPickUpHealth.cs" root0="FORCE_HIGHLIGHTING" />
@@ -68,10 +53,17 @@
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/ObjectPickUpPointsMultiplier.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/ObjectPool.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/ObjectProperties.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="mock://E:/Unity Projects/Asteroids_Multiplayer/Asteroids_Multiplayer/Assets/Scripts/ObjectProperties.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://E:/Unity Projects/Asteroids_Multiplayer/Asteroids_Multiplayer/Assets/Scripts/ObjectProperties.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Player/MovementController.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Player/PlayerController.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="mock://E:/Unity Projects/Asteroids_Multiplayer/Asteroids_Multiplayer/Assets/Scripts/Player/PlayerController.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Player/ShootingController.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="mock://E:/Unity Projects/Asteroids_Multiplayer/Asteroids_Multiplayer/Assets/Scripts/Player/ShootingController.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Scripts/PlayerBuffDisplayController.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/PlayerDataManager.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="mock://E:/Unity Projects/Asteroids_Multiplayer/Asteroids_Multiplayer/Assets/Scripts/PlayerDataManager.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://E:/Unity Projects/Asteroids_Multiplayer/Asteroids_Multiplayer/Assets/Scripts/PlayerDataManager.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/PlayerHealthController.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/PlayerSpawner.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/ShopController.cs" root0="FORCE_HIGHLIGHTING" />
@@ -82,6 +74,7 @@
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.community.netcode.transport.photon-realtime@d862504b14/Runtime/PhotonRealtimeTransport.Matchmaking.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.community.netcode.transport.photon-realtime@d862504b14/Runtime/PhotonRealtimeTransport.Room.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.community.netcode.transport.photon-realtime@d862504b14/Runtime/PhotonRealtimeTransport.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.burst@1.6.6/Editor/BurstDisassembler.Core.ARM64.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.collections@1.2.4/Unity.Collections/CollectionHelper.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.collections@1.2.4/Unity.Collections/NativeList.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.netcode.gameobjects@1.4.0/Editor/NetworkBehaviourEditor.cs" root0="SKIP_HIGHLIGHTING" />
@@ -90,8 +83,11 @@
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.netcode.gameobjects@1.4.0/Runtime/Core/NetworkObject.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.netcode.gameobjects@1.4.0/Runtime/Messaging/Messages/RpcMessages.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.netcode.gameobjects@1.4.0/Runtime/NetworkVariable/Collections/NetworkList.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.netcode.gameobjects@1.4.0/Runtime/NetworkVariable/NetworkVariable.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.netcode.gameobjects@1.4.0/Runtime/Spawning/NetworkSpawnManager.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.netcode.gameobjects@1.4.0/Tests/Runtime/NetworkObject/NetworkObjectSpawnManyObjectsTests.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.timeline@1.6.5/Editor/State/WindowState.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.ugui@1.0.0/Runtime/UI/Core/MultipleDisplayUtilities.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.ugui@1.0.0/Runtime/UI/Core/VertexModifiers/BaseMeshEffect.cs" root0="SKIP_HIGHLIGHTING" />
   </component>
   <component name="MarkdownSettingsMigration">
@@ -122,7 +118,7 @@
 }</component>
   <component name="RunManager" selected="Attach to Unity Editor.Attach to Unity Editor">
     <configuration name="Standalone Player" type="RunUnityExe" factoryName="Unity Executable">
-      <option name="EXE_PATH" value="$PROJECT_DIR$/../../../Unity_Test_Builds\Asteroids_Multiplayer.exe" />
+      <option name="EXE_PATH" value="$PROJECT_DIR$/../../../Unity_Test_Builds/AsteroidsBuilds\Asteroids_Multiplayer.exe" />
       <option name="PROGRAM_PARAMETERS" value="" />
       <option name="WORKING_DIRECTORY" value="E:\Unity_Test_Builds" />
       <option name="PASS_PARENT_ENVS" value="1" />
@@ -299,7 +295,14 @@
       <option name="project" value="LOCAL" />
       <updated>1687350712174</updated>
     </task>
-    <option name="localTasksCounter" value="17" />
+    <task id="LOCAL-00017" summary="Refactor and added buff display">
+      <created>1688586063425</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1688586063425</updated>
+    </task>
+    <option name="localTasksCounter" value="18" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -336,6 +339,7 @@
     <MESSAGE value="Shop" />
     <MESSAGE value="aaaaaa" />
     <MESSAGE value="uuuuuu" />
-    <option name="LAST_COMMIT_MESSAGE" value="uuuuuu" />
+    <MESSAGE value="Refactor and added buff display" />
+    <option name="LAST_COMMIT_MESSAGE" value="Refactor and added buff display" />
   </component>
 </project>

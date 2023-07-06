@@ -43,5 +43,8 @@ public class PlayerController : NetworkBehaviour
 
         if (Input.GetKeyDown(KeyCode.B))
             ShopController.instance.ToggleShop();
+
+        if (Input.GetKeyDown(KeyCode.P))
+            PlayerDataManager.instance.ChangePointsServerRpc(playerID, 10000);
     }
 }

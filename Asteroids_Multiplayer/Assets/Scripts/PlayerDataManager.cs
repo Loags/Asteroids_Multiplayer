@@ -15,6 +15,7 @@ public class PlayerDataManager : NetworkBehaviour
         public int Points;
         public int Level;
         public int Rank;
+        public int SelectedShipIndex;
 
         public PlayerData(ulong _id, bool _isReady)
         {
@@ -23,6 +24,7 @@ public class PlayerDataManager : NetworkBehaviour
             Points = 0;
             Level = 0;
             Rank = 0;
+            SelectedShipIndex = 0;
         }
 
         public void NetworkSerialize<T>(BufferSerializer<T> serializer) where T : IReaderWriter
@@ -32,6 +34,7 @@ public class PlayerDataManager : NetworkBehaviour
             serializer.SerializeValue(ref Points);
             serializer.SerializeValue(ref Level);
             serializer.SerializeValue(ref Rank);
+            serializer.SerializeValue(ref SelectedShipIndex);
         }
 
         public bool Equals(PlayerData other)
@@ -119,7 +122,7 @@ public class PlayerDataManager : NetworkBehaviour
     }
 
 
-    public void UpdatePlayerData(ulong _clientId, bool _isReady)
+    public void UpdateReadyPlayerData(ulong _clientId, bool _isReady)
     {
         if (!IsHost) return;
 
@@ -139,7 +142,7 @@ public class PlayerDataManager : NetworkBehaviour
         foreach (var playerData in playerDatas)
         {
             output += "\nPlayerID: " + playerData.ID + "\nPlayerIsReady: " + playerData.IsReady + "\nPlayerPoints: " +
-                      playerData.Points + "\n";
+                      playerData.Points + "\nShipIndex: " + playerData.SelectedShipIndex + "\n";
         }
 
         Debug.Log(output);
@@ -182,6 +185,32 @@ public class PlayerDataManager : NetworkBehaviour
             playerDatas[i] = updatedPlayerData;
             break;
         }
+    }
+
+    [ServerRpc(RequireOwnership = false)]
+    public void ChangeShipSelectedIndexServerRpc(ulong _id, int _index)
+    {
+        if (!IsHost) return;
+
+        for (int i = 0; i < playerDatas.Count; i++)
+        {
+            if (playerDatas[i].ID != _id) continue;
+            PlayerData updatedPlayerData = playerDatas[i];
+            updatedPlayerData.SelectedShipIndex = _index;
+            playerDatas[i] = updatedPlayerData;
+            break;
+        }
+    }
+
+    public int GetShipIndexWithClientID(ulong _id)
+    {
+        foreach (var playerData in playerDatas)
+        {
+            if (playerData.ID != _id) continue;
+            return playerData.SelectedShipIndex;
+        }
+
+        return -1;
     }
 
     public void RemovePlayerData(ulong _playerId)

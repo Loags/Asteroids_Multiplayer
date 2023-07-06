@@ -5,7 +5,7 @@ using Unity.Netcode;
 
 public class PlayerSpawner : NetworkBehaviour
 {
-    public GameObject playerPrefab;
+    public List<GameObject> playerPrefabs;
     [SerializeField] private List<Transform> spawnPoints;
 
     private Transform spawnPoint;
@@ -24,6 +24,9 @@ public class PlayerSpawner : NetworkBehaviour
                 spawnPoint = spawnPoints[i];
         }
 
+        GameObject playerPrefab =
+            playerPrefabs[PlayerDataManager.instance.GetShipIndexWithClientID(_clientId)];
+        Debug.Log("player prefab name: " + playerPrefab.name);
         var playerObject = Instantiate(playerPrefab);
         playerObject.GetComponent<NetworkObject>().SpawnWithOwnership(_clientId);
         playerObject.transform.position = spawnPoint.position;

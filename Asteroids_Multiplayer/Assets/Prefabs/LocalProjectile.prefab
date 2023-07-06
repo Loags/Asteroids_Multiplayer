@@ -53,7 +53,6 @@ MonoBehaviour:
   typ: 1
   damage: 5
   shootEffect: {fileID: 100002, guid: 565cdc2ed7b030a41accd8f00ae59a50, type: 3}
-  hitEffect: {fileID: 100002, guid: cafecd3fc3b761c45bb1553f35cf5c96, type: 3}
   playerID: 0
 --- !u!50 &7866021555785772465
 Rigidbody2D:
