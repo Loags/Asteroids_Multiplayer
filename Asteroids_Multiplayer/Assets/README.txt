@@ -1,9 +1,7 @@
 README - Asteroids Multiplayer
 
 WARNINGS:
-- Rejoining Lobby is not possible
-- Leaving as a client is also not possible
-- Host can leave lobby and create a new one
+- Rejoining the same Lobby as a client is not possible
 
 
 InGame Keys:

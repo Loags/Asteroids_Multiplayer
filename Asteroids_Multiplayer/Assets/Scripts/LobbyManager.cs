@@ -46,7 +46,6 @@ public class LobbyManager : NetworkBehaviour
     {
         networkManager.OnClientConnectedCallback += OnClientConnect;
         networkManager.OnClientDisconnectCallback += OnClientDisconnected;
-        networkManager.OnServerStopped += LeaveServer;
     }
 
     private void Start()
@@ -59,7 +58,6 @@ public class LobbyManager : NetworkBehaviour
     {
         networkManager.OnClientConnectedCallback -= OnClientConnect;
         networkManager.OnClientDisconnectCallback -= OnClientDisconnected;
-        networkManager.OnServerStopped -= LeaveServer;
     }
 
     private void OnClientConnect(ulong _clientId)
@@ -72,12 +70,7 @@ public class LobbyManager : NetworkBehaviour
 
     private void OnClientDisconnected(ulong _clientId)
     {
-        RemovePlayerFromLobbyClientRpc();
-    }
-
-    private void LeaveServer(bool obj)
-    {
-        SceneManager.LoadScene("MainMenu", LoadSceneMode.Single);
+        RemovePlayerFromLobbyServerRpc();
     }
 
     [ServerRpc]
@@ -108,10 +101,9 @@ public class LobbyManager : NetworkBehaviour
         }
     }
 
-    [ClientRpc]
-    private void RemovePlayerFromLobbyClientRpc()
+    [ServerRpc(RequireOwnership = false)]
+    private void RemovePlayerFromLobbyServerRpc()
     {
-        if (!IsHost) return;
         PlayerDataManager.instance.RemovePlayerData(networkManager.LocalClientId);
         UpdateLobbySlotListClientRpc();
     }
@@ -151,14 +143,6 @@ public class LobbyManager : NetworkBehaviour
         startGameButton.gameObject.SetActive(active);
     }
 
-    public void LeaveLobby()
-    {
-        if (!IsHost)
-            SceneManager.LoadScene("MainMenu");
-        networkManager.Shutdown();
-        DontDestroyOnLoadController.DestroyAll();
-    }
-
     public void OpenShipSelection()
     {
         CanvasGroup ownCanvasGroup = GetComponent<CanvasGroup>();
@@ -169,5 +153,10 @@ public class LobbyManager : NetworkBehaviour
         shipSelectionCanvasGroup.interactable = true;
         shipSelectionCanvasGroup.alpha = 1;
         shipSelectionCanvasGroup.blocksRaycasts = true;
+    }
+
+    public void LeaveButton()
+    {
+        GameNetworkManager.instance.Disconnect(true);
     }
 }
